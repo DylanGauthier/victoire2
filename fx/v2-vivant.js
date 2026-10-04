@@ -109,26 +109,19 @@
       anchor.insertBefore(tl,anchor.firstChild); // en tête de la section « À venir » : profite de son fond
       if('IntersectionObserver' in window){var tio=new IntersectionObserver(function(es){if(es[0].isIntersecting){tl.classList.add('v2x-in');tio.disconnect()}},{threshold:.4});tio.observe(tl)}else tl.classList.add('v2x-in');
 
-      /* Repère de lecture : la frise reste sous l'en-tête et un trait rouge avance jusqu'à la date de l'affiche à l'écran */
+      /* Repère de lecture : un trait rouge avance sur la frise jusqu'à la date de l'affiche à l'écran */
       var read=document.createElement('div');read.className='v2x-tl__read';rail.insertBefore(read,rail.children[1]);
       var ticks=[].slice.call(rail.querySelectorAll('.v2x-tl__tick'));
-      // l'en-tête du thème ne devient collant qu'après un peu de scroll : on le cherche à chaque fois
-      function hdBottom(){var b=0;[].slice.call(document.querySelectorAll('header, .header_is_sticky, header [class*="sticky"]')).forEach(function(e){var p=getComputedStyle(e).position,r=e.getBoundingClientRect();if((p==='fixed'||p==='sticky')&&r.top<=1&&r.height>0&&r.height<220)b=Math.max(b,r.bottom)});return b}
-      // bord à bord : la frise annule les marges latérales de la section
-      function bleed(){tl.style.marginLeft=tl.style.marginRight='0';var pr=tl.parentNode.getBoundingClientRect(),r=tl.getBoundingClientRect(),dw=document.documentElement.clientWidth;tl.style.marginLeft=-r.left+'px';tl.style.marginRight=-(dw-r.right)+'px'}
       var readT=false;
       function onRead(){readT=false;
-        var on=body.classList.contains('v2x-on-read'), hd=hdBottom();
-        tl.style.setProperty('--v2x-hd',hd+'px');
-        var tr=tl.getBoundingClientRect(), ar=anchor.getBoundingClientRect();
-        tl.classList.toggle('v2x-stuck',on&&tr.top<=hd+1&&ar.top<hd);
+        var on=body.classList.contains('v2x-on-read'), ar=anchor.getBoundingClientRect();
         var best=null,bd=1e9,mid=innerHeight*.55;
         if(on&&ar.top<innerHeight*.6&&ar.bottom>innerHeight*.4)evs.forEach(function(e,i){var r=e.card.getBoundingClientRect(),d=Math.abs((r.top+r.bottom)/2-mid);if(d<bd){bd=d;best=i}});
         read.style.width=best===null?'0':pos(evs[best].d);
         ticks.forEach(function(a,i){a.classList.toggle('v2x-cur',i===best)});
       }
       addEventListener('scroll',function(){if(!readT){readT=true;requestAnimationFrame(onRead)}},{passive:true});
-      addEventListener('resize',function(){bleed();onRead()});bleed();onRead();
+      addEventListener('resize',onRead);onRead();
     }
 
     /* -- Ambiance du fond : une couche derrière le contenu des deux sections noires -- */
@@ -169,7 +162,7 @@
           var c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,-off*dpr);c.clearRect(0,off,W,VH);
           var T=still?0:t, mx=mouse.x-sr.left, my=mouse.y-sr.top, y0=off, y1=off+VH;
           if(m==='points'){
-            var g=24, rp=[];
+            var g=24, rp=[], light=body.classList.contains('v2x-light');
             ripples=ripples.filter(function(r){return t-r.t0<1500});
             ripples.forEach(function(r){if(r.b===b)rp.push({x:r.x,y:r.y,R:(t-r.t0)*.75,k:1-(t-r.t0)/1500})});
             // grille calée sur la page : les points se prolongent d'une section à l'autre
@@ -179,7 +172,7 @@
               for(var q=0;q<rp.length;q++){var dd=Math.abs(Math.hypot(x-rp[q].x,y-rp[q].y)-rp[q].R);if(dd<34)near=Math.max(near,(1-dd/34)*rp[q].k*.9)}
               var al=.05+.09*wave*wave;
               if(near>0){c.fillStyle='rgba(224,4,4,'+(al+.6*near).toFixed(3)+')';c.beginPath();c.arc(x,y,1.1+1.3*near,0,6.283);c.fill()}
-              else{c.fillStyle='rgba(255,255,255,'+al.toFixed(3)+')';c.fillRect(x-1,y-1,2,2)}
+              else{c.fillStyle=(light?'rgba(17,17,17,':'rgba(255,255,255,')+(light?al*1.25:al).toFixed(3)+')';c.fillRect(x-1,y-1,2,2)}
             }
           }else if(m==='ondes'){
             var kick=Math.pow(1-((T%beatMs)/beatMs),3);
@@ -203,6 +196,24 @@
       requestAnimationFrame(drawBg);
     }
     requestAnimationFrame(drawBg);
+
+    /* -- Version claire : on repère une fois les blancs, fonds noirs et liserés blancs des deux sections sombres
+       (hors affiches, qui gardent leur rendu) ; les classes n'agissent que si <body> porte v2x-light. -- */
+    (function(){
+      var rgb=function(c){var m=c.match(/[\d.]+/g);return m?m.map(Number):[0,0,0,0]};
+      var isRed=function(c){var v=rgb(c);return v[0]>180&&v[1]<60&&v[2]<60&&(v[3]===undefined||v[3]>0)};
+      var roots=bgs.map(function(b){return b.sec});
+      roots.forEach(function(root){
+        [root].concat([].slice.call(root.querySelectorAll('*'))).forEach(function(el){
+          if(el.closest(CARD)||el.closest('.v2x-tl')||el.closest('.v2x-bg')||el.closest('.v2x-cd'))return;
+          var cs=getComputedStyle(el), btn=el.closest('.elementor-button');
+          if(btn&&isRed(getComputedStyle(btn).backgroundColor))return; // boutons rouges : inchangés
+          var c=rgb(cs.color), lo=Math.min(c[0],c[1],c[2]), sat=Math.max(c[0],c[1],c[2])-lo; if(sat<30){if(lo>200)el.classList.add('v2x-l-ink');else if(lo>120)el.classList.add('v2x-l-ink2')}
+          var b=rgb(cs.backgroundColor); if(cs.backgroundColor!=='rgba(0, 0, 0, 0)'&&b[0]<45&&b[1]<45&&b[2]<45&&(b[3]===undefined||b[3]>0))el.classList.add(el===root?'v2x-l-page':'v2x-l-bg');
+          var bc=rgb(cs.borderTopColor); if(parseFloat(cs.borderTopWidth)+parseFloat(cs.borderLeftWidth)+parseFloat(cs.borderBottomWidth)>0&&bc[0]>170&&bc[1]>170&&bc[2]>170)el.classList.add('v2x-l-bd');
+        });
+      });
+    })();
 
     /* -- Barre de progression rouge en haut de page (même élément que sur les pages concert du site) -- */
     var pb=document.querySelector('.v2-progress');

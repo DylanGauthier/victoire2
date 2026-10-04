@@ -2397,7 +2397,7 @@ body.v2x-calm .v2x-frame,body.v2x-calm .v2x-mark{transition:none!important}
 /* ---- Ambiance du fond (sections noires du prochain concert et de « À venir ») ----
    Mode par classe sur <body> : v2x-bg-points, v2x-bg-ondes, v2x-bg-pulse (canvas), v2x-bg-trame, v2x-bg-faisceaux (CSS) ;
    v2x-on-grain ajoute le grain du site. Rouge V2, blanc et noir uniquement. */
-.v2x-bgsec{position:relative;overflow:hidden;overflow:clip} /* clip : laisse fonctionner la frise collante */
+.v2x-bgsec{position:relative;overflow:hidden}
 .v2x-bgsec > .elementor-container{position:relative;z-index:1}
 .v2x-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .v2x-bg > *{display:none;position:absolute;inset:0}
@@ -2439,15 +2439,9 @@ body.v2x-on-soir .v2x-cd--soir .v2x-cd__badge--soir,body.v2x-on-soir .v2x-cd--li
 .v2x-prog{display:none}
 body.v2x-on-prog .v2x-prog{display:block}
 
-/* ---- Repère de lecture : frise collante sous l'en-tête + trait rouge jusqu'à l'affiche à l'écran ---- */
+/* ---- Repère de lecture : trait rouge sur la frise jusqu'à l'affiche à l'écran ---- */
 .v2x-tl__read{position:absolute;left:0;top:26px;height:2px;width:0;background:#E00404;transition:width .45s cubic-bezier(.6,0,.2,1);display:none}
 body.v2x-on-read .v2x-tl__read{display:block}
-/* le thème met #layout et body en overflow:hidden, ce qui empêche tout « sticky » ; clip rogne pareil sans casser le sticky */
-body.v2x-on-read{overflow-x:clip!important;overflow-y:visible!important}
-body.v2x-on-read #layout{overflow:clip!important}
-body.v2x-on-read .v2x-tl{position:sticky;top:var(--v2x-hd,0px);z-index:20;transition:padding .25s ease,background-color .25s ease}
-body.v2x-on-read .v2x-tl.v2x-stuck{background:#0d0d0d;padding-top:26px;padding-bottom:16px;box-shadow:0 1px 0 #2a2a2a,0 12px 24px -12px rgba(0,0,0,.8)}
-body.v2x-on-read .v2x-tl.v2x-stuck .v2x-tl__month,body.v2x-on-read .v2x-tl.v2x-stuck .v2x-tl__now i{opacity:0}
 .v2x-tl__tick.v2x-cur{color:#E00404}
 .v2x-tl__tick.v2x-cur::before{top:12px;height:28px}
 
@@ -2465,6 +2459,27 @@ body.v2x-on-arrive .e-loop-item.elementor-10327 > section.v2x-ca:not(.v2x-a-in) 
 @media (prefers-reduced-motion:reduce){body .v2x-a,body .v2x-ca::before,body .v2x-ca > .elementor-container{opacity:1!important;transform:none!important}}
 body.v2x-calm .v2x-ca::before,body.v2x-calm .v2x-ca > .elementor-container{opacity:1!important;transform:none!important;transition:none!important}
 body.v2x-calm .v2x-a{opacity:1!important;transform:none!important;transition:none!important}
+
+/* ---- Version claire (body.v2x-light) : même typo, même rouge ; fond blanc cassé dans la continuité de l'en-tête ---- */
+body.v2x-light .v2x-l-page{background-color:#f4f3f0!important}
+body.v2x-light .v2x-l-bg{background-color:#fff!important}
+body.v2x-light .v2x-l-ink{color:#111!important}
+body.v2x-light .v2x-l-ink2{color:#4a4a4a!important}
+body.v2x-light .v2x-l-bd{border-color:#111!important}
+body.v2x-light .elementor-button.v2x-l-bd:hover,body.v2x-light .elementor-button.v2x-l-bd:focus-visible{background-color:#111!important;color:#fff!important}
+body.v2x-light .elementor-button.v2x-l-bd:hover *{color:#fff!important}
+/* grille de la prog : traits noirs, cases vides claires */
+body.v2x-light .elementor .elementor-loop-container.elementor-grid:has(.elementor-10327){border-color:#111!important;background:#f4f3f0!important}
+body.v2x-light .elementor-10327 .elementor-element.elementor-element-77a1a36d{border-color:#111!important}
+/* frise, compte à rebours, séparateurs */
+body.v2x-light .v2x-tl__line{background:#111;opacity:.3}
+body.v2x-light .v2x-tl__tick{color:#111}
+body.v2x-light .v2x-tl__tick:hover,body.v2x-light .v2x-tl__tick.v2x-hot,body.v2x-light .v2x-tl__tick.v2x-cur{color:#E00404}
+body.v2x-light .v2x-tl__month{color:#777;border-color:#777}
+body.v2x-light .v2x-cd__u b,body.v2x-light .v2x-cd__badge b{color:#111}
+body.v2x-light .v2x-cd__u i,body.v2x-light .v2x-cd__badge span{color:#777}
+body.v2x-light .v2x-bg__grain{opacity:.18;mix-blend-mode:multiply}
+body.v2x-light .v2x-mark{opacity:.9}
 
 </style>
 <script id="v2-vivant-js">
@@ -2579,26 +2594,19 @@ body.v2x-calm .v2x-a{opacity:1!important;transform:none!important;transition:non
       anchor.insertBefore(tl,anchor.firstChild); // en tête de la section « À venir » : profite de son fond
       if('IntersectionObserver' in window){var tio=new IntersectionObserver(function(es){if(es[0].isIntersecting){tl.classList.add('v2x-in');tio.disconnect()}},{threshold:.4});tio.observe(tl)}else tl.classList.add('v2x-in');
 
-      /* Repère de lecture : la frise reste sous l'en-tête et un trait rouge avance jusqu'à la date de l'affiche à l'écran */
+      /* Repère de lecture : un trait rouge avance sur la frise jusqu'à la date de l'affiche à l'écran */
       var read=document.createElement('div');read.className='v2x-tl__read';rail.insertBefore(read,rail.children[1]);
       var ticks=[].slice.call(rail.querySelectorAll('.v2x-tl__tick'));
-      // l'en-tête du thème ne devient collant qu'après un peu de scroll : on le cherche à chaque fois
-      function hdBottom(){var b=0;[].slice.call(document.querySelectorAll('header, .header_is_sticky, header [class*="sticky"]')).forEach(function(e){var p=getComputedStyle(e).position,r=e.getBoundingClientRect();if((p==='fixed'||p==='sticky')&&r.top<=1&&r.height>0&&r.height<220)b=Math.max(b,r.bottom)});return b}
-      // bord à bord : la frise annule les marges latérales de la section
-      function bleed(){tl.style.marginLeft=tl.style.marginRight='0';var pr=tl.parentNode.getBoundingClientRect(),r=tl.getBoundingClientRect(),dw=document.documentElement.clientWidth;tl.style.marginLeft=-r.left+'px';tl.style.marginRight=-(dw-r.right)+'px'}
       var readT=false;
       function onRead(){readT=false;
-        var on=body.classList.contains('v2x-on-read'), hd=hdBottom();
-        tl.style.setProperty('--v2x-hd',hd+'px');
-        var tr=tl.getBoundingClientRect(), ar=anchor.getBoundingClientRect();
-        tl.classList.toggle('v2x-stuck',on&&tr.top<=hd+1&&ar.top<hd);
+        var on=body.classList.contains('v2x-on-read'), ar=anchor.getBoundingClientRect();
         var best=null,bd=1e9,mid=innerHeight*.55;
         if(on&&ar.top<innerHeight*.6&&ar.bottom>innerHeight*.4)evs.forEach(function(e,i){var r=e.card.getBoundingClientRect(),d=Math.abs((r.top+r.bottom)/2-mid);if(d<bd){bd=d;best=i}});
         read.style.width=best===null?'0':pos(evs[best].d);
         ticks.forEach(function(a,i){a.classList.toggle('v2x-cur',i===best)});
       }
       addEventListener('scroll',function(){if(!readT){readT=true;requestAnimationFrame(onRead)}},{passive:true});
-      addEventListener('resize',function(){bleed();onRead()});bleed();onRead();
+      addEventListener('resize',onRead);onRead();
     }
 
     /* -- Ambiance du fond : une couche derrière le contenu des deux sections noires -- */
@@ -2639,7 +2647,7 @@ body.v2x-calm .v2x-a{opacity:1!important;transform:none!important;transition:non
           var c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,-off*dpr);c.clearRect(0,off,W,VH);
           var T=still?0:t, mx=mouse.x-sr.left, my=mouse.y-sr.top, y0=off, y1=off+VH;
           if(m==='points'){
-            var g=24, rp=[];
+            var g=24, rp=[], light=body.classList.contains('v2x-light');
             ripples=ripples.filter(function(r){return t-r.t0<1500});
             ripples.forEach(function(r){if(r.b===b)rp.push({x:r.x,y:r.y,R:(t-r.t0)*.75,k:1-(t-r.t0)/1500})});
             // grille calée sur la page : les points se prolongent d'une section à l'autre
@@ -2649,7 +2657,7 @@ body.v2x-calm .v2x-a{opacity:1!important;transform:none!important;transition:non
               for(var q=0;q<rp.length;q++){var dd=Math.abs(Math.hypot(x-rp[q].x,y-rp[q].y)-rp[q].R);if(dd<34)near=Math.max(near,(1-dd/34)*rp[q].k*.9)}
               var al=.05+.09*wave*wave;
               if(near>0){c.fillStyle='rgba(224,4,4,'+(al+.6*near).toFixed(3)+')';c.beginPath();c.arc(x,y,1.1+1.3*near,0,6.283);c.fill()}
-              else{c.fillStyle='rgba(255,255,255,'+al.toFixed(3)+')';c.fillRect(x-1,y-1,2,2)}
+              else{c.fillStyle=(light?'rgba(17,17,17,':'rgba(255,255,255,')+(light?al*1.25:al).toFixed(3)+')';c.fillRect(x-1,y-1,2,2)}
             }
           }else if(m==='ondes'){
             var kick=Math.pow(1-((T%beatMs)/beatMs),3);
@@ -2673,6 +2681,24 @@ body.v2x-calm .v2x-a{opacity:1!important;transform:none!important;transition:non
       requestAnimationFrame(drawBg);
     }
     requestAnimationFrame(drawBg);
+
+    /* -- Version claire : on repère une fois les blancs, fonds noirs et liserés blancs des deux sections sombres
+       (hors affiches, qui gardent leur rendu) ; les classes n'agissent que si <body> porte v2x-light. -- */
+    (function(){
+      var rgb=function(c){var m=c.match(/[\d.]+/g);return m?m.map(Number):[0,0,0,0]};
+      var isRed=function(c){var v=rgb(c);return v[0]>180&&v[1]<60&&v[2]<60&&(v[3]===undefined||v[3]>0)};
+      var roots=bgs.map(function(b){return b.sec});
+      roots.forEach(function(root){
+        [root].concat([].slice.call(root.querySelectorAll('*'))).forEach(function(el){
+          if(el.closest(CARD)||el.closest('.v2x-tl')||el.closest('.v2x-bg')||el.closest('.v2x-cd'))return;
+          var cs=getComputedStyle(el), btn=el.closest('.elementor-button');
+          if(btn&&isRed(getComputedStyle(btn).backgroundColor))return; // boutons rouges : inchangés
+          var c=rgb(cs.color), lo=Math.min(c[0],c[1],c[2]), sat=Math.max(c[0],c[1],c[2])-lo; if(sat<30){if(lo>200)el.classList.add('v2x-l-ink');else if(lo>120)el.classList.add('v2x-l-ink2')}
+          var b=rgb(cs.backgroundColor); if(cs.backgroundColor!=='rgba(0, 0, 0, 0)'&&b[0]<45&&b[1]<45&&b[2]<45&&(b[3]===undefined||b[3]>0))el.classList.add(el===root?'v2x-l-page':'v2x-l-bg');
+          var bc=rgb(cs.borderTopColor); if(parseFloat(cs.borderTopWidth)+parseFloat(cs.borderLeftWidth)+parseFloat(cs.borderBottomWidth)>0&&bc[0]>170&&bc[1]>170&&bc[2]>170)el.classList.add('v2x-l-bd');
+        });
+      });
+    })();
 
     /* -- Barre de progression rouge en haut de page (même élément que sur les pages concert du site) -- */
     var pb=document.querySelector('.v2-progress');
@@ -2724,7 +2750,7 @@ body.v2x-calm .v2x-a{opacity:1!important;transform:none!important;transition:non
 <script>
 /* Panneau de démonstration uniquement (ne fait pas partie des effets à intégrer). */
 addEventListener('load',function(){setTimeout(function(){
-  var L=[['v2x-on-tl','Frise des prochaines dates'],['v2x-on-eq','Petit égaliseur'],['v2x-on-grid','Grille : liseré rouge + repères'],['v2x-on-cd','Compte à rebours'],['v2x-on-ticket','Bouton ticket'],['v2x-on-stamp','Tampon COMPLET'],['v2x-on-read','Repère de lecture (frise collante)'],['v2x-on-ripple','Onde au clic sur le fond'],['v2x-on-prog','Barre de progression'],['v2x-on-arrive','Arrivée des contenus'],['v2x-on-soir','« Ce soir » / « En ce moment »']];
+  var L=[['v2x-on-tl','Frise des prochaines dates'],['v2x-on-eq','Petit égaliseur'],['v2x-on-grid','Grille : liseré rouge + repères'],['v2x-on-cd','Compte à rebours'],['v2x-on-ticket','Bouton ticket'],['v2x-on-stamp','Tampon COMPLET'],['v2x-on-read','Repère de lecture sur la frise'],['v2x-on-ripple','Onde au clic sur le fond'],['v2x-on-prog','Barre de progression'],['v2x-on-arrive','Arrivée des contenus'],['v2x-on-soir','« Ce soir » / « En ce moment »']];
   var BG=[['points','Matrice de points (réagit à la souris)'],['ondes','Ondes en rythme'],['pulse','Pulsation haut-parleur'],['trame','Trame demi-teinte'],['faisceaux','Faisceaux de projecteurs'],['','Noir uni (actuel)']];
   var ANIM=[['glitch','Glitch'],['serigraphie','Sérigraphie mal repérée'],['trame','Trame de points'],['projecteur','Coup de projecteur'],['vhs','Balayage VHS'],['rideau','Rideau rouge'],['tempo','Battement en rythme'],['','Aucune']];
   var p=document.createElement('div');
@@ -2733,6 +2759,7 @@ addEventListener('load',function(){setTimeout(function(){
     L.map(function(x){return '<label style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" data-c="'+x[0]+'" checked style="accent-color:#E00404">'+x[1]+'</label>'}).join('')+
     '<label style="display:grid;gap:4px">Animation des visuels au survol<select data-anim style="font:600 12px Montserrat,sans-serif;padding:4px;border:1.5px solid #111">'+ANIM.map(function(a){return '<option value="'+a[0]+'">'+a[1]+'</option>'}).join('')+'</select></label>'+
     '<label style="display:grid;gap:4px">Ambiance du fond<select data-bg style="font:600 12px Montserrat,sans-serif;padding:4px;border:1.5px solid #111">'+BG.map(function(a){return '<option value="'+a[0]+'">'+a[1]+'</option>'}).join('')+'</select></label>'+
+    '<label style="display:flex;gap:8px;align-items:center;cursor:pointer;font-weight:800"><input type="checkbox" data-light style="accent-color:#E00404">Version claire</label>'+
     '<label style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" data-c="v2x-on-grain" checked style="accent-color:#E00404">Grain sur le fond</label>'+
     '<label style="display:grid;gap:4px">Simuler l\'heure (compte à rebours)<select data-sim style="font:600 12px Montserrat,sans-serif;padding:4px;border:1.5px solid #111"><option value="">Temps réel</option><option value="-3">Jour J, 17h</option><option value="2">Pendant le concert, 22h</option></select></label>'+
     '<label style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" data-calm style="accent-color:#E00404">Réduire les animations</label>'+
@@ -2742,6 +2769,7 @@ addEventListener('load',function(){setTimeout(function(){
   p.querySelector('[data-anim]').onchange=function(e){ANIM.forEach(function(a){if(a[0])document.body.classList.remove('v2x-anim-'+a[0])});if(e.target.value)document.body.classList.add('v2x-anim-'+e.target.value)};
   p.querySelector('[data-bg]').onchange=function(e){BG.forEach(function(a){if(a[0])document.body.classList.remove('v2x-bg-'+a[0])});if(e.target.value)document.body.classList.add('v2x-bg-'+e.target.value)};
   p.querySelector('[data-sim]').onchange=function(e){var v=e.target.value;window.v2xSim=(v===''||!window.v2xTarget)?0:window.v2xTarget+(+v)*36e5-Date.now()};
+  p.querySelector('[data-light]').onchange=function(e){document.body.classList.toggle('v2x-light',e.target.checked)};
   p.querySelector('[data-calm]').onchange=function(e){document.body.classList.toggle('v2x-calm',e.target.checked)};
   var h=p.querySelector('[data-h]'),b=p.querySelector('[data-b]');
   function tog(){var m=b.style.display!=='none';b.style.display=m?'none':'grid';h.lastChild.textContent=m?'+':'—'}

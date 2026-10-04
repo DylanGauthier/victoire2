@@ -159,7 +159,7 @@ body.v2x-calm .v2x-frame,body.v2x-calm .v2x-mark{transition:none!important}
 /* ---- Ambiance du fond (sections noires du prochain concert et de « À venir ») ----
    Mode par classe sur <body> : v2x-bg-points, v2x-bg-ondes, v2x-bg-pulse (canvas), v2x-bg-trame, v2x-bg-faisceaux (CSS) ;
    v2x-on-grain ajoute le grain du site. Rouge V2, blanc et noir uniquement. */
-.v2x-bgsec{position:relative;overflow:hidden;overflow:clip} /* clip : laisse fonctionner la frise collante */
+.v2x-bgsec{position:relative;overflow:hidden}
 .v2x-bgsec > .elementor-container{position:relative;z-index:1}
 .v2x-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .v2x-bg > *{display:none;position:absolute;inset:0}
@@ -201,15 +201,9 @@ body.v2x-on-soir .v2x-cd--soir .v2x-cd__badge--soir,body.v2x-on-soir .v2x-cd--li
 .v2x-prog{display:none}
 body.v2x-on-prog .v2x-prog{display:block}
 
-/* ---- Repère de lecture : frise collante sous l'en-tête + trait rouge jusqu'à l'affiche à l'écran ---- */
+/* ---- Repère de lecture : trait rouge sur la frise jusqu'à l'affiche à l'écran ---- */
 .v2x-tl__read{position:absolute;left:0;top:26px;height:2px;width:0;background:#E00404;transition:width .45s cubic-bezier(.6,0,.2,1);display:none}
 body.v2x-on-read .v2x-tl__read{display:block}
-/* le thème met #layout et body en overflow:hidden, ce qui empêche tout « sticky » ; clip rogne pareil sans casser le sticky */
-body.v2x-on-read{overflow-x:clip!important;overflow-y:visible!important}
-body.v2x-on-read #layout{overflow:clip!important}
-body.v2x-on-read .v2x-tl{position:sticky;top:var(--v2x-hd,0px);z-index:20;transition:padding .25s ease,background-color .25s ease}
-body.v2x-on-read .v2x-tl.v2x-stuck{background:#0d0d0d;padding-top:26px;padding-bottom:16px;box-shadow:0 1px 0 #2a2a2a,0 12px 24px -12px rgba(0,0,0,.8)}
-body.v2x-on-read .v2x-tl.v2x-stuck .v2x-tl__month,body.v2x-on-read .v2x-tl.v2x-stuck .v2x-tl__now i{opacity:0}
 .v2x-tl__tick.v2x-cur{color:#E00404}
 .v2x-tl__tick.v2x-cur::before{top:12px;height:28px}
 
@@ -227,3 +221,24 @@ body.v2x-on-arrive .e-loop-item.elementor-10327 > section.v2x-ca:not(.v2x-a-in) 
 @media (prefers-reduced-motion:reduce){body .v2x-a,body .v2x-ca::before,body .v2x-ca > .elementor-container{opacity:1!important;transform:none!important}}
 body.v2x-calm .v2x-ca::before,body.v2x-calm .v2x-ca > .elementor-container{opacity:1!important;transform:none!important;transition:none!important}
 body.v2x-calm .v2x-a{opacity:1!important;transform:none!important;transition:none!important}
+
+/* ---- Version claire (body.v2x-light) : même typo, même rouge ; fond blanc cassé dans la continuité de l'en-tête ---- */
+body.v2x-light .v2x-l-page{background-color:#f4f3f0!important}
+body.v2x-light .v2x-l-bg{background-color:#fff!important}
+body.v2x-light .v2x-l-ink{color:#111!important}
+body.v2x-light .v2x-l-ink2{color:#4a4a4a!important}
+body.v2x-light .v2x-l-bd{border-color:#111!important}
+body.v2x-light .elementor-button.v2x-l-bd:hover,body.v2x-light .elementor-button.v2x-l-bd:focus-visible{background-color:#111!important;color:#fff!important}
+body.v2x-light .elementor-button.v2x-l-bd:hover *{color:#fff!important}
+/* grille de la prog : traits noirs, cases vides claires */
+body.v2x-light .elementor .elementor-loop-container.elementor-grid:has(.elementor-10327){border-color:#111!important;background:#f4f3f0!important}
+body.v2x-light .elementor-10327 .elementor-element.elementor-element-77a1a36d{border-color:#111!important}
+/* frise, compte à rebours, séparateurs */
+body.v2x-light .v2x-tl__line{background:#111;opacity:.3}
+body.v2x-light .v2x-tl__tick{color:#111}
+body.v2x-light .v2x-tl__tick:hover,body.v2x-light .v2x-tl__tick.v2x-hot,body.v2x-light .v2x-tl__tick.v2x-cur{color:#E00404}
+body.v2x-light .v2x-tl__month{color:#777;border-color:#777}
+body.v2x-light .v2x-cd__u b,body.v2x-light .v2x-cd__badge b{color:#111}
+body.v2x-light .v2x-cd__u i,body.v2x-light .v2x-cd__badge span{color:#777}
+body.v2x-light .v2x-bg__grain{opacity:.18;mix-blend-mode:multiply}
+body.v2x-light .v2x-mark{opacity:.9}
