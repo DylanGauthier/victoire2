@@ -2373,11 +2373,15 @@ body[class*="v2x-anim-"] .v2x-fx{display:block}
 body.v2x-calm .v2x-fx,body.pojo-a11y-high-contrast .v2x-fx,body.pojo-a11y-grayscale .v2x-fx{display:none!important}
 body.v2x-calm .v2x-host img,body.v2x-calm .v2x-host::before{animation:none!important}
 
-/* ---- Grille de la prog : liseré rouge tracé au survol + croix de repérage aux croisements ----
+/* ---- Grille de la prog espacée : le « mur » collé du site devient des affiches séparées, chacune avec son cadre de 3px ---- */
+body .elementor .elementor-loop-container.elementor-grid:has(.elementor-10327 .elementor-element.elementor-element-77a1a36d){gap:clamp(12px,1.7vw,26px)!important;border:0!important;background:transparent!important}
+.elementor-10327 .elementor-element.elementor-element-77a1a36d{border:3px solid #fff!important}
+
+/* ---- Grille de la prog : liseré rouge tracé au survol + croix de repérage aux coins ----
    Les traits blancs du site font 3px : à droite/en bas de chaque affiche, à gauche/en haut via la voisine ou le cadre. */
 .e-loop-item.elementor-10327:hover,.e-loop-item.elementor-10327:has(> .v2-in){z-index:6}
 .v2x-frame,.v2x-mark{display:none}
-body.v2x-on-grid .v2x-frame{display:block;position:absolute;top:-3px;left:-3px;right:0;bottom:0;z-index:7;pointer-events:none;
+body.v2x-on-grid .v2x-frame{display:block;position:absolute;inset:0;z-index:7;pointer-events:none;
   background:
     linear-gradient(#E00404,#E00404) left top/0 3px no-repeat,
     linear-gradient(#E00404,#E00404) right top/3px 0 no-repeat,
@@ -2388,8 +2392,8 @@ body.v2x-on-grid .e-loop-item.elementor-10327:hover .v2x-frame,
 body.v2x-on-grid .e-loop-item.elementor-10327:has(> .v2-in) .v2x-frame{background-size:100% 3px,3px 100%,100% 3px,3px 100%}
 body.v2x-on-grid .v2x-mark{display:block;position:absolute;width:15px;height:15px;z-index:8;pointer-events:none;
   background:linear-gradient(#E00404,#E00404) center/15px 3px no-repeat,linear-gradient(#E00404,#E00404) center/3px 15px no-repeat;transition:transform .35s ease}
-.v2x-mark--tl{top:-9px;left:-9px}.v2x-mark--tr{top:-9px;right:-6px}
-.v2x-mark--bl{bottom:-6px;left:-9px}.v2x-mark--br{bottom:-6px;right:-6px}
+.v2x-mark--tl{top:-6px;left:-6px}.v2x-mark--tr{top:-6px;right:-6px}
+.v2x-mark--bl{bottom:-6px;left:-6px}.v2x-mark--br{bottom:-6px;right:-6px}
 body.v2x-on-grid .e-loop-item.elementor-10327:hover .v2x-mark{transform:rotate(90deg)}
 @media (prefers-reduced-motion:reduce){.v2x-frame,.v2x-mark{transition:none!important}}
 body.v2x-calm .v2x-frame,body.v2x-calm .v2x-mark{transition:none!important}
@@ -2484,6 +2488,18 @@ body:is(.v2x-light,.v2x-mid) .v2x-cd__u i,body:is(.v2x-light,.v2x-mid) .v2x-cd__
 body:is(.v2x-light,.v2x-mid) .v2x-bg__grain{opacity:.18;mix-blend-mode:multiply}
 body:is(.v2x-light,.v2x-mid) .v2x-mark{opacity:.9}
 
+/* ---- Hero du prochain concert : il décolle du fond (cadre rouge décalé + ombre) ---- */
+.e-loop-item.elementor-10204{position:relative;z-index:0;--v2x-off:16px}
+.e-loop-item.elementor-10204 > section{box-shadow:0 30px 60px -24px rgba(0,0,0,.75)}
+.v2x-lift{position:absolute;inset:0;z-index:-1;pointer-events:none;border:3px solid #E00404;opacity:0;
+  transform:translate(0,0);transition:transform 1.3s cubic-bezier(.23,1,.32,1),opacity .8s ease}
+.v2x-lift-in .v2x-lift{opacity:1;transform:translate(calc(var(--v2x-off) + var(--v2x-lx,0px)),calc(var(--v2x-off) + var(--v2x-ly,0px)))}
+.v2x-lift-in:hover .v2x-lift{transition:transform .5s cubic-bezier(.23,1,.32,1),opacity .8s ease}
+@media (max-width:767px){.e-loop-item.elementor-10204{--v2x-off:9px}}
+body:is(.v2x-light,.v2x-mid) .e-loop-item.elementor-10204 > section{box-shadow:0 26px 50px -26px rgba(0,0,0,.35)}
+@media (prefers-reduced-motion:reduce){.v2x-lift{transition:none!important}}
+body.v2x-calm .v2x-lift{transition:none!important}
+
 </style>
 <script id="v2-vivant-js">
 /* V2 vivant : détails complémentaires. Lit la page telle qu'Elementor la produit, n'en change pas la structure.
@@ -2520,6 +2536,12 @@ body:is(.v2x-light,.v2x-mid) .v2x-mark{opacity:.9}
       var genre=hero.querySelector('[data-id="78976fbd"] .elementor-widget-container');
       var bpm=bpmFor(clean(hero));
       if(kicker&&bpm){kicker.appendChild(eqEl(bpm,6))}
+      // Décollage du hero : cadre rouge décalé derrière le bloc (second passage d'impression) + légère parallaxe à la souris
+      var lift=document.createElement('span');lift.className='v2x-lift';lift.setAttribute('aria-hidden','true');hero.insertBefore(lift,hero.firstChild);
+      setTimeout(function(){hero.classList.add('v2x-lift-in')},700);
+      hero.addEventListener('pointermove',function(e){if(e.pointerType!=='mouse')return;var r=hero.getBoundingClientRect();
+        hero.style.setProperty('--v2x-lx',(-(e.clientX-r.left)/r.width+.5)*10+'px');hero.style.setProperty('--v2x-ly',(-(e.clientY-r.top)/r.height+.5)*8+'px')});
+      hero.addEventListener('pointerleave',function(){hero.style.removeProperty('--v2x-lx');hero.style.removeProperty('--v2x-ly')});
       var himg=hero.querySelector('[data-id="43572f94"] img');
       if(himg){var hc=himg.closest('a')||himg.parentNode;hc.style.display='block';addFx(hc,'url("'+(himg.currentSrc||himg.src)+'")',bpm)}
       var m=clean(hero).toLowerCase().match(new RegExp('(\\d{1,2})\\s+('+MOIS.join('|')+')'));
