@@ -222,23 +222,26 @@ body.v2x-on-arrive .e-loop-item.elementor-10327 > section.v2x-ca:not(.v2x-a-in) 
 body.v2x-calm .v2x-ca::before,body.v2x-calm .v2x-ca > .elementor-container{opacity:1!important;transform:none!important;transition:none!important}
 body.v2x-calm .v2x-a{opacity:1!important;transform:none!important;transition:none!important}
 
-/* ---- Version claire (body.v2x-light) : même typo, même rouge ; fond blanc cassé dans la continuité de l'en-tête ---- */
-body.v2x-light .v2x-l-page{background-color:#f4f3f0!important}
-body.v2x-light .v2x-l-bg{background-color:#fff!important}
-body.v2x-light .v2x-l-ink{color:#111!important}
-body.v2x-light .v2x-l-ink2{color:#4a4a4a!important}
-body.v2x-light .v2x-l-bd{border-color:#111!important}
-body.v2x-light .elementor-button.v2x-l-bd:hover,body.v2x-light .elementor-button.v2x-l-bd:focus-visible{background-color:#111!important;color:#fff!important}
-body.v2x-light .elementor-button.v2x-l-bd:hover *{color:#fff!important}
+/* ---- Versions claires : v2x-light (blanc cassé, continuité de l'en-tête) et v2x-mid (« béton », gris pierre chaud) ----
+   Même typo, même rouge ; seuls les fonds et les encres changent. */
+body.v2x-light{--v2x-page:#f4f3f0;--v2x-card:#fff}
+body.v2x-mid{--v2x-page:#d6d0c7;--v2x-card:#ebe6df}
+body:is(.v2x-light,.v2x-mid) .v2x-l-page{background-color:var(--v2x-page)!important}
+body:is(.v2x-light,.v2x-mid) .v2x-l-bg{background-color:var(--v2x-card)!important}
+body:is(.v2x-light,.v2x-mid) .v2x-l-ink{color:#111!important}
+body:is(.v2x-light,.v2x-mid) .v2x-l-ink2{color:#4a4a4a!important}
+body:is(.v2x-light,.v2x-mid) .v2x-l-bd{border-color:#111!important}
+body:is(.v2x-light,.v2x-mid) .elementor-button.v2x-l-bd:hover,body:is(.v2x-light,.v2x-mid) .elementor-button.v2x-l-bd:focus-visible{background-color:#111!important;color:#fff!important}
+body:is(.v2x-light,.v2x-mid) .elementor-button.v2x-l-bd:hover *{color:#fff!important}
 /* grille de la prog : traits noirs, cases vides claires */
-body.v2x-light .elementor .elementor-loop-container.elementor-grid:has(.elementor-10327){border-color:#111!important;background:#f4f3f0!important}
-body.v2x-light .elementor-10327 .elementor-element.elementor-element-77a1a36d{border-color:#111!important}
+body:is(.v2x-light,.v2x-mid) .elementor .elementor-loop-container.elementor-grid:has(.elementor-10327){border-color:#111!important;background:var(--v2x-page)!important}
+body:is(.v2x-light,.v2x-mid) .elementor-10327 .elementor-element.elementor-element-77a1a36d{border-color:#111!important}
 /* frise, compte à rebours, séparateurs */
-body.v2x-light .v2x-tl__line{background:#111;opacity:.3}
-body.v2x-light .v2x-tl__tick{color:#111}
-body.v2x-light .v2x-tl__tick:hover,body.v2x-light .v2x-tl__tick.v2x-hot,body.v2x-light .v2x-tl__tick.v2x-cur{color:#E00404}
-body.v2x-light .v2x-tl__month{color:#777;border-color:#777}
-body.v2x-light .v2x-cd__u b,body.v2x-light .v2x-cd__badge b{color:#111}
-body.v2x-light .v2x-cd__u i,body.v2x-light .v2x-cd__badge span{color:#777}
-body.v2x-light .v2x-bg__grain{opacity:.18;mix-blend-mode:multiply}
-body.v2x-light .v2x-mark{opacity:.9}
+body:is(.v2x-light,.v2x-mid) .v2x-tl__line{background:#111;opacity:.3}
+body:is(.v2x-light,.v2x-mid) .v2x-tl__tick{color:#111}
+body:is(.v2x-light,.v2x-mid) .v2x-tl__tick:hover,body:is(.v2x-light,.v2x-mid) .v2x-tl__tick.v2x-hot,body:is(.v2x-light,.v2x-mid) .v2x-tl__tick.v2x-cur{color:#E00404}
+body:is(.v2x-light,.v2x-mid) .v2x-tl__month{color:#777;border-color:#777}
+body:is(.v2x-light,.v2x-mid) .v2x-cd__u b,body:is(.v2x-light,.v2x-mid) .v2x-cd__badge b{color:#111}
+body:is(.v2x-light,.v2x-mid) .v2x-cd__u i,body:is(.v2x-light,.v2x-mid) .v2x-cd__badge span{color:#777}
+body:is(.v2x-light,.v2x-mid) .v2x-bg__grain{opacity:.18;mix-blend-mode:multiply}
+body:is(.v2x-light,.v2x-mid) .v2x-mark{opacity:.9}

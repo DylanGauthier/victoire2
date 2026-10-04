@@ -1,7 +1,7 @@
 /* V2 vivant : détails complémentaires. Lit la page telle qu'Elementor la produit, n'en change pas la structure.
    S'exécute après les scripts V2 existants (v2-wipe, v2-soldout, v2-in). */
 (function(){
-  var FX=['v2x-on-tl','v2x-on-eq','v2x-on-cd','v2x-on-ticket','v2x-on-stamp','v2x-anim-glitch','v2x-on-grid','v2x-bg-points','v2x-on-grain','v2x-on-read','v2x-on-ripple','v2x-on-soir','v2x-on-prog','v2x-on-arrive'];
+  var FX=['v2x-on-tl','v2x-on-eq','v2x-on-cd','v2x-on-ticket','v2x-on-stamp','v2x-anim-serigraphie','v2x-on-grid','v2x-bg-points','v2x-on-grain','v2x-on-read','v2x-on-ripple','v2x-on-soir','v2x-on-prog','v2x-on-arrive'];
   var HERO='.e-loop-item.elementor-10204', CARD='.e-loop-item.elementor-10327';
   var MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
 
@@ -143,6 +143,9 @@
     addEventListener('pointermove',function(e){mouse.x=e.clientX;mouse.y=e.clientY},{passive:true});
     if('IntersectionObserver' in window){var bio=new IntersectionObserver(function(es){es.forEach(function(e){bgs.forEach(function(b){if(b.sec===e.target)b.vis=e.isIntersecting})})});bgs.forEach(function(b){bio.observe(b.sec)})}else bgs.forEach(function(b){b.vis=true});
     var beatMs=6e4/TEMPO, last=0, ripples=[];
+    // vitesse de scroll lissée (molette, trackpad ou doigt) : pilote les ondes
+    var lastSY=scrollY, lastST=performance.now(), sVel=0;
+    addEventListener('scroll',function(){var n=performance.now(),dt=Math.max(16,n-lastST);sVel=Math.min(3,sVel*.6+Math.abs(scrollY-lastSY)/dt*.4);lastSY=scrollY;lastST=n},{passive:true});
     // Onde au clic : un anneau rouge traverse les points
     addEventListener('pointerdown',function(e){
       if(!body.classList.contains('v2x-on-ripple')||reduce||body.classList.contains('v2x-calm'))return;
@@ -162,7 +165,7 @@
           var c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,-off*dpr);c.clearRect(0,off,W,VH);
           var T=still?0:t, mx=mouse.x-sr.left, my=mouse.y-sr.top, y0=off, y1=off+VH;
           if(m==='points'){
-            var g=24, rp=[], light=body.classList.contains('v2x-light');
+            var g=24, rp=[], light=body.classList.contains('v2x-light')||body.classList.contains('v2x-mid');
             ripples=ripples.filter(function(r){return t-r.t0<1500});
             ripples.forEach(function(r){if(r.b===b)rp.push({x:r.x,y:r.y,R:(t-r.t0)*.75,k:1-(t-r.t0)/1500})});
             // grille calée sur la page : les points se prolongent d'une section à l'autre
@@ -172,15 +175,18 @@
               for(var q=0;q<rp.length;q++){var dd=Math.abs(Math.hypot(x-rp[q].x,y-rp[q].y)-rp[q].R);if(dd<34)near=Math.max(near,(1-dd/34)*rp[q].k*.9)}
               var al=.05+.09*wave*wave;
               if(near>0){c.fillStyle='rgba(224,4,4,'+(al+.6*near).toFixed(3)+')';c.beginPath();c.arc(x,y,1.1+1.3*near,0,6.283);c.fill()}
-              else{c.fillStyle=(light?'rgba(17,17,17,':'rgba(255,255,255,')+(light?al*1.25:al).toFixed(3)+')';c.fillRect(x-1,y-1,2,2)}
+              else{c.fillStyle=(light?'rgba(17,17,17,':'rgba(255,255,255,')+(light?al*(body.classList.contains('v2x-mid')?1.6:1.25):al).toFixed(3)+')';c.fillRect(x-1,y-1,2,2)}
             }
           }else if(m==='ondes'){
-            var kick=Math.pow(1-((T%beatMs)/beatMs),3);
+            // les ondes avancent avec le scroll et gonflent quand on défile vite ; dérive très lente au repos
+            sVel*=.94;
+            var kick=Math.pow(1-((T%beatMs)/beatMs),3)*.5, sc=(still?0:scrollY)*.0045, boost=1+(still?0:Math.min(sVel,2))*.55,
+                dark=body.classList.contains('v2x-light')||body.classList.contains('v2x-mid');
             for(var k=0;k<6;k++){
-              var red=k===2, amp=(14+k*7)*(1+(red?.35*kick:.12*kick)), base=y0+VH*(.3+k*.09), ph=T*.0004*(k%2?1:-1)+k*1.7;
+              var red=k===2, amp=(14+k*7)*(1+(red?.35*kick:.12*kick))*boost, base=y0+VH*(.3+k*.09), ph=(T*.00012+sc*(1+k*.15))*(k%2?1:-1)+k*1.7;
               c.beginPath();
               for(var x2=0;x2<=W;x2+=8){var yy=base+Math.sin(x2*.006+ph)*amp+Math.sin(x2*.017-ph*1.3)*amp*.35;x2?c.lineTo(x2,yy):c.moveTo(x2,yy)}
-              c.strokeStyle=red?'rgba(224,4,4,.28)':'rgba(255,255,255,'+(.035+k*.008).toFixed(3)+')';c.lineWidth=red?1.5:1;c.stroke();
+              c.strokeStyle=red?'rgba(224,4,4,'+(dark?.55:.28)+')':(dark?'rgba(17,17,17,':'rgba(255,255,255,')+((.035+k*.008)*(dark?2.6:1)).toFixed(3)+')';c.lineWidth=red?1.5:1;c.stroke();
             }
           }else if(m==='pulse'){
             // anneaux concentriques qui partent au tempo depuis la gauche de la section, comme une membrane de haut-parleur

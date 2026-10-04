@@ -2460,33 +2460,36 @@ body.v2x-on-arrive .e-loop-item.elementor-10327 > section.v2x-ca:not(.v2x-a-in) 
 body.v2x-calm .v2x-ca::before,body.v2x-calm .v2x-ca > .elementor-container{opacity:1!important;transform:none!important;transition:none!important}
 body.v2x-calm .v2x-a{opacity:1!important;transform:none!important;transition:none!important}
 
-/* ---- Version claire (body.v2x-light) : même typo, même rouge ; fond blanc cassé dans la continuité de l'en-tête ---- */
-body.v2x-light .v2x-l-page{background-color:#f4f3f0!important}
-body.v2x-light .v2x-l-bg{background-color:#fff!important}
-body.v2x-light .v2x-l-ink{color:#111!important}
-body.v2x-light .v2x-l-ink2{color:#4a4a4a!important}
-body.v2x-light .v2x-l-bd{border-color:#111!important}
-body.v2x-light .elementor-button.v2x-l-bd:hover,body.v2x-light .elementor-button.v2x-l-bd:focus-visible{background-color:#111!important;color:#fff!important}
-body.v2x-light .elementor-button.v2x-l-bd:hover *{color:#fff!important}
+/* ---- Versions claires : v2x-light (blanc cassé, continuité de l'en-tête) et v2x-mid (« béton », gris pierre chaud) ----
+   Même typo, même rouge ; seuls les fonds et les encres changent. */
+body.v2x-light{--v2x-page:#f4f3f0;--v2x-card:#fff}
+body.v2x-mid{--v2x-page:#d6d0c7;--v2x-card:#ebe6df}
+body:is(.v2x-light,.v2x-mid) .v2x-l-page{background-color:var(--v2x-page)!important}
+body:is(.v2x-light,.v2x-mid) .v2x-l-bg{background-color:var(--v2x-card)!important}
+body:is(.v2x-light,.v2x-mid) .v2x-l-ink{color:#111!important}
+body:is(.v2x-light,.v2x-mid) .v2x-l-ink2{color:#4a4a4a!important}
+body:is(.v2x-light,.v2x-mid) .v2x-l-bd{border-color:#111!important}
+body:is(.v2x-light,.v2x-mid) .elementor-button.v2x-l-bd:hover,body:is(.v2x-light,.v2x-mid) .elementor-button.v2x-l-bd:focus-visible{background-color:#111!important;color:#fff!important}
+body:is(.v2x-light,.v2x-mid) .elementor-button.v2x-l-bd:hover *{color:#fff!important}
 /* grille de la prog : traits noirs, cases vides claires */
-body.v2x-light .elementor .elementor-loop-container.elementor-grid:has(.elementor-10327){border-color:#111!important;background:#f4f3f0!important}
-body.v2x-light .elementor-10327 .elementor-element.elementor-element-77a1a36d{border-color:#111!important}
+body:is(.v2x-light,.v2x-mid) .elementor .elementor-loop-container.elementor-grid:has(.elementor-10327){border-color:#111!important;background:var(--v2x-page)!important}
+body:is(.v2x-light,.v2x-mid) .elementor-10327 .elementor-element.elementor-element-77a1a36d{border-color:#111!important}
 /* frise, compte à rebours, séparateurs */
-body.v2x-light .v2x-tl__line{background:#111;opacity:.3}
-body.v2x-light .v2x-tl__tick{color:#111}
-body.v2x-light .v2x-tl__tick:hover,body.v2x-light .v2x-tl__tick.v2x-hot,body.v2x-light .v2x-tl__tick.v2x-cur{color:#E00404}
-body.v2x-light .v2x-tl__month{color:#777;border-color:#777}
-body.v2x-light .v2x-cd__u b,body.v2x-light .v2x-cd__badge b{color:#111}
-body.v2x-light .v2x-cd__u i,body.v2x-light .v2x-cd__badge span{color:#777}
-body.v2x-light .v2x-bg__grain{opacity:.18;mix-blend-mode:multiply}
-body.v2x-light .v2x-mark{opacity:.9}
+body:is(.v2x-light,.v2x-mid) .v2x-tl__line{background:#111;opacity:.3}
+body:is(.v2x-light,.v2x-mid) .v2x-tl__tick{color:#111}
+body:is(.v2x-light,.v2x-mid) .v2x-tl__tick:hover,body:is(.v2x-light,.v2x-mid) .v2x-tl__tick.v2x-hot,body:is(.v2x-light,.v2x-mid) .v2x-tl__tick.v2x-cur{color:#E00404}
+body:is(.v2x-light,.v2x-mid) .v2x-tl__month{color:#777;border-color:#777}
+body:is(.v2x-light,.v2x-mid) .v2x-cd__u b,body:is(.v2x-light,.v2x-mid) .v2x-cd__badge b{color:#111}
+body:is(.v2x-light,.v2x-mid) .v2x-cd__u i,body:is(.v2x-light,.v2x-mid) .v2x-cd__badge span{color:#777}
+body:is(.v2x-light,.v2x-mid) .v2x-bg__grain{opacity:.18;mix-blend-mode:multiply}
+body:is(.v2x-light,.v2x-mid) .v2x-mark{opacity:.9}
 
 </style>
 <script id="v2-vivant-js">
 /* V2 vivant : détails complémentaires. Lit la page telle qu'Elementor la produit, n'en change pas la structure.
    S'exécute après les scripts V2 existants (v2-wipe, v2-soldout, v2-in). */
 (function(){
-  var FX=['v2x-on-tl','v2x-on-eq','v2x-on-cd','v2x-on-ticket','v2x-on-stamp','v2x-anim-glitch','v2x-on-grid','v2x-bg-points','v2x-on-grain','v2x-on-read','v2x-on-ripple','v2x-on-soir','v2x-on-prog','v2x-on-arrive'];
+  var FX=['v2x-on-tl','v2x-on-eq','v2x-on-cd','v2x-on-ticket','v2x-on-stamp','v2x-anim-serigraphie','v2x-on-grid','v2x-bg-points','v2x-on-grain','v2x-on-read','v2x-on-ripple','v2x-on-soir','v2x-on-prog','v2x-on-arrive'];
   var HERO='.e-loop-item.elementor-10204', CARD='.e-loop-item.elementor-10327';
   var MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
 
@@ -2628,6 +2631,9 @@ body.v2x-light .v2x-mark{opacity:.9}
     addEventListener('pointermove',function(e){mouse.x=e.clientX;mouse.y=e.clientY},{passive:true});
     if('IntersectionObserver' in window){var bio=new IntersectionObserver(function(es){es.forEach(function(e){bgs.forEach(function(b){if(b.sec===e.target)b.vis=e.isIntersecting})})});bgs.forEach(function(b){bio.observe(b.sec)})}else bgs.forEach(function(b){b.vis=true});
     var beatMs=6e4/TEMPO, last=0, ripples=[];
+    // vitesse de scroll lissée (molette, trackpad ou doigt) : pilote les ondes
+    var lastSY=scrollY, lastST=performance.now(), sVel=0;
+    addEventListener('scroll',function(){var n=performance.now(),dt=Math.max(16,n-lastST);sVel=Math.min(3,sVel*.6+Math.abs(scrollY-lastSY)/dt*.4);lastSY=scrollY;lastST=n},{passive:true});
     // Onde au clic : un anneau rouge traverse les points
     addEventListener('pointerdown',function(e){
       if(!body.classList.contains('v2x-on-ripple')||reduce||body.classList.contains('v2x-calm'))return;
@@ -2647,7 +2653,7 @@ body.v2x-light .v2x-mark{opacity:.9}
           var c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,-off*dpr);c.clearRect(0,off,W,VH);
           var T=still?0:t, mx=mouse.x-sr.left, my=mouse.y-sr.top, y0=off, y1=off+VH;
           if(m==='points'){
-            var g=24, rp=[], light=body.classList.contains('v2x-light');
+            var g=24, rp=[], light=body.classList.contains('v2x-light')||body.classList.contains('v2x-mid');
             ripples=ripples.filter(function(r){return t-r.t0<1500});
             ripples.forEach(function(r){if(r.b===b)rp.push({x:r.x,y:r.y,R:(t-r.t0)*.75,k:1-(t-r.t0)/1500})});
             // grille calée sur la page : les points se prolongent d'une section à l'autre
@@ -2657,15 +2663,18 @@ body.v2x-light .v2x-mark{opacity:.9}
               for(var q=0;q<rp.length;q++){var dd=Math.abs(Math.hypot(x-rp[q].x,y-rp[q].y)-rp[q].R);if(dd<34)near=Math.max(near,(1-dd/34)*rp[q].k*.9)}
               var al=.05+.09*wave*wave;
               if(near>0){c.fillStyle='rgba(224,4,4,'+(al+.6*near).toFixed(3)+')';c.beginPath();c.arc(x,y,1.1+1.3*near,0,6.283);c.fill()}
-              else{c.fillStyle=(light?'rgba(17,17,17,':'rgba(255,255,255,')+(light?al*1.25:al).toFixed(3)+')';c.fillRect(x-1,y-1,2,2)}
+              else{c.fillStyle=(light?'rgba(17,17,17,':'rgba(255,255,255,')+(light?al*(body.classList.contains('v2x-mid')?1.6:1.25):al).toFixed(3)+')';c.fillRect(x-1,y-1,2,2)}
             }
           }else if(m==='ondes'){
-            var kick=Math.pow(1-((T%beatMs)/beatMs),3);
+            // les ondes avancent avec le scroll et gonflent quand on défile vite ; dérive très lente au repos
+            sVel*=.94;
+            var kick=Math.pow(1-((T%beatMs)/beatMs),3)*.5, sc=(still?0:scrollY)*.0045, boost=1+(still?0:Math.min(sVel,2))*.55,
+                dark=body.classList.contains('v2x-light')||body.classList.contains('v2x-mid');
             for(var k=0;k<6;k++){
-              var red=k===2, amp=(14+k*7)*(1+(red?.35*kick:.12*kick)), base=y0+VH*(.3+k*.09), ph=T*.0004*(k%2?1:-1)+k*1.7;
+              var red=k===2, amp=(14+k*7)*(1+(red?.35*kick:.12*kick))*boost, base=y0+VH*(.3+k*.09), ph=(T*.00012+sc*(1+k*.15))*(k%2?1:-1)+k*1.7;
               c.beginPath();
               for(var x2=0;x2<=W;x2+=8){var yy=base+Math.sin(x2*.006+ph)*amp+Math.sin(x2*.017-ph*1.3)*amp*.35;x2?c.lineTo(x2,yy):c.moveTo(x2,yy)}
-              c.strokeStyle=red?'rgba(224,4,4,.28)':'rgba(255,255,255,'+(.035+k*.008).toFixed(3)+')';c.lineWidth=red?1.5:1;c.stroke();
+              c.strokeStyle=red?'rgba(224,4,4,'+(dark?.55:.28)+')':(dark?'rgba(17,17,17,':'rgba(255,255,255,')+((.035+k*.008)*(dark?2.6:1)).toFixed(3)+')';c.lineWidth=red?1.5:1;c.stroke();
             }
           }else if(m==='pulse'){
             // anneaux concentriques qui partent au tempo depuis la gauche de la section, comme une membrane de haut-parleur
@@ -2750,27 +2759,26 @@ body.v2x-light .v2x-mark{opacity:.9}
 <script>
 /* Panneau de démonstration uniquement (ne fait pas partie des effets à intégrer). */
 addEventListener('load',function(){setTimeout(function(){
-  var L=[['v2x-on-tl','Frise des prochaines dates'],['v2x-on-eq','Petit égaliseur'],['v2x-on-grid','Grille : liseré rouge + repères'],['v2x-on-cd','Compte à rebours'],['v2x-on-ticket','Bouton ticket'],['v2x-on-stamp','Tampon COMPLET'],['v2x-on-read','Repère de lecture sur la frise'],['v2x-on-ripple','Onde au clic sur le fond'],['v2x-on-prog','Barre de progression'],['v2x-on-arrive','Arrivée des contenus'],['v2x-on-soir','« Ce soir » / « En ce moment »']];
-  var BG=[['points','Matrice de points (réagit à la souris)'],['ondes','Ondes en rythme'],['pulse','Pulsation haut-parleur'],['trame','Trame demi-teinte'],['faisceaux','Faisceaux de projecteurs'],['','Noir uni (actuel)']];
-  var ANIM=[['glitch','Glitch'],['serigraphie','Sérigraphie mal repérée'],['trame','Trame de points'],['projecteur','Coup de projecteur'],['vhs','Balayage VHS'],['rideau','Rideau rouge'],['tempo','Battement en rythme'],['','Aucune']];
+  var B=document.body, sel='font:600 12px Montserrat,sans-serif;padding:4px;border:1.5px solid #111;width:100%';
+  var THEMES=[['','Sombre (actuel)'],['v2x-mid','Béton (entre-deux)'],['v2x-light','Clair']];
+  var BG=[['points','Matrice de points'],['ondes','Ondes en rythme']];
+  var ANIM=[['serigraphie','Sérigraphie mal repérée'],['glitch','Glitch'],['','Aucune']];
   var p=document.createElement('div');
-  p.style.cssText='position:fixed;left:16px;bottom:16px;z-index:2147483000;width:260px;background:#fff;color:#111;border:2px solid #111;box-shadow:5px 5px 0 #E00404;font:600 13px Montserrat,sans-serif';
-  p.innerHTML='<div data-h style="background:#111;color:#fff;padding:8px 12px;font:800 14px \'Barlow Condensed\',sans-serif;letter-spacing:1.6px;text-transform:uppercase;cursor:pointer;display:flex;justify-content:space-between">Effets démo <span>—</span></div><div data-b style="padding:10px 12px;display:grid;gap:7px">'+
-    L.map(function(x){return '<label style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" data-c="'+x[0]+'" checked style="accent-color:#E00404">'+x[1]+'</label>'}).join('')+
-    '<label style="display:grid;gap:4px">Animation des visuels au survol<select data-anim style="font:600 12px Montserrat,sans-serif;padding:4px;border:1.5px solid #111">'+ANIM.map(function(a){return '<option value="'+a[0]+'">'+a[1]+'</option>'}).join('')+'</select></label>'+
-    '<label style="display:grid;gap:4px">Ambiance du fond<select data-bg style="font:600 12px Montserrat,sans-serif;padding:4px;border:1.5px solid #111">'+BG.map(function(a){return '<option value="'+a[0]+'">'+a[1]+'</option>'}).join('')+'</select></label>'+
-    '<label style="display:flex;gap:8px;align-items:center;cursor:pointer;font-weight:800"><input type="checkbox" data-light style="accent-color:#E00404">Version claire</label>'+
-    '<label style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" data-c="v2x-on-grain" checked style="accent-color:#E00404">Grain sur le fond</label>'+
-    '<label style="display:grid;gap:4px">Simuler l\'heure (compte à rebours)<select data-sim style="font:600 12px Montserrat,sans-serif;padding:4px;border:1.5px solid #111"><option value="">Temps réel</option><option value="-3">Jour J, 17h</option><option value="2">Pendant le concert, 22h</option></select></label>'+
+  p.style.cssText='position:fixed;left:16px;bottom:16px;z-index:2147483000;width:250px;background:#fff;color:#111;border:2px solid #111;box-shadow:5px 5px 0 #E00404;font:600 13px Montserrat,sans-serif';
+  p.innerHTML='<div data-h style="background:#111;color:#fff;padding:8px 12px;font:800 14px \'Barlow Condensed\',sans-serif;letter-spacing:1.6px;text-transform:uppercase;cursor:pointer;display:flex;justify-content:space-between">Effets démo <span>—</span></div>'+
+    '<div data-b style="padding:10px 12px;display:grid;gap:9px">'+
+    '<label style="display:grid;gap:4px">Version<select data-theme style="'+sel+'">'+THEMES.map(function(a){return '<option value="'+a[0]+'">'+a[1]+'</option>'}).join('')+'</select></label>'+
+    '<label style="display:grid;gap:4px">Animation des visuels au survol<select data-anim style="'+sel+'">'+ANIM.map(function(a){return '<option value="'+a[0]+'">'+a[1]+'</option>'}).join('')+'</select></label>'+
+    '<label style="display:grid;gap:4px">Fond animé<select data-bg style="'+sel+'">'+BG.map(function(a){return '<option value="'+a[0]+'">'+a[1]+'</option>'}).join('')+'</select></label>'+
+    '<label style="display:grid;gap:4px">Simuler l\'heure (compte à rebours)<select data-sim style="'+sel+'"><option value="">Temps réel</option><option value="-3">Jour J, 17h</option><option value="2">Pendant le concert, 22h</option></select></label>'+
     '<label style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" data-calm style="accent-color:#E00404">Réduire les animations</label>'+
-    '<div style="font:500 11px/1.4 Montserrat,sans-serif;color:#666;border-top:1px solid #ddd;padding-top:7px">Tout le reste est le site actuel, à l\'identique (duotone, grain, boutons, logo).</div></div>';
+    '</div>';
   document.body.appendChild(p);
-  p.querySelectorAll('[data-c]').forEach(function(c){c.onchange=function(){document.body.classList.toggle(c.dataset.c,c.checked)}});
-  p.querySelector('[data-anim]').onchange=function(e){ANIM.forEach(function(a){if(a[0])document.body.classList.remove('v2x-anim-'+a[0])});if(e.target.value)document.body.classList.add('v2x-anim-'+e.target.value)};
-  p.querySelector('[data-bg]').onchange=function(e){BG.forEach(function(a){if(a[0])document.body.classList.remove('v2x-bg-'+a[0])});if(e.target.value)document.body.classList.add('v2x-bg-'+e.target.value)};
+  p.querySelector('[data-theme]').onchange=function(e){THEMES.forEach(function(a){if(a[0])B.classList.remove(a[0])});if(e.target.value)B.classList.add(e.target.value)};
+  p.querySelector('[data-anim]').onchange=function(e){ANIM.forEach(function(a){if(a[0])B.classList.remove('v2x-anim-'+a[0])});if(e.target.value)B.classList.add('v2x-anim-'+e.target.value)};
+  p.querySelector('[data-bg]').onchange=function(e){BG.forEach(function(a){B.classList.remove('v2x-bg-'+a[0])});B.classList.add('v2x-bg-'+e.target.value)};
   p.querySelector('[data-sim]').onchange=function(e){var v=e.target.value;window.v2xSim=(v===''||!window.v2xTarget)?0:window.v2xTarget+(+v)*36e5-Date.now()};
-  p.querySelector('[data-light]').onchange=function(e){document.body.classList.toggle('v2x-light',e.target.checked)};
-  p.querySelector('[data-calm]').onchange=function(e){document.body.classList.toggle('v2x-calm',e.target.checked)};
+  p.querySelector('[data-calm]').onchange=function(e){B.classList.toggle('v2x-calm',e.target.checked)};
   var h=p.querySelector('[data-h]'),b=p.querySelector('[data-b]');
   function tog(){var m=b.style.display!=='none';b.style.display=m?'none':'grid';h.lastChild.textContent=m?'+':'—'}
   h.onclick=tog; if(innerWidth<900)tog();
