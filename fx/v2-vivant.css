@@ -1,0 +1,229 @@
+/* V2 vivant : petits détails complémentaires (frise des dates, égaliseur, compte à rebours, ticket, tampon COMPLET, glitch, grille).
+   Chaque effet dépend d'une classe sur <body> (v2x-on-tl, v2x-on-eq, …) : retirer la classe coupe l'effet.
+   Ne touche ni au logo, ni au duotone des affiches, ni au grain, ni aux boutons « wipe » existants. */
+
+/* ---- Frise des prochaines semaines (entre le prochain concert et « À venir ») ---- */
+.v2x-tl{display:none;position:relative;z-index:1;padding:40px max(24px,calc((100% - 1240px) / 2)) 30px}
+body.v2x-on-tl .v2x-tl{display:block}
+.v2x-tl__rail{position:relative;height:56px}
+.v2x-tl__line{position:absolute;left:0;right:0;top:26px;height:2px;background:#fff;opacity:.35;transform-origin:left;transform:scaleX(0);transition:transform 1.1s cubic-bezier(.6,0,.2,1)}
+.v2x-tl.v2x-in .v2x-tl__line{transform:scaleX(1)}
+.v2x-tl__tick{position:absolute;top:0;width:28px;margin-left:-14px;height:56px;display:block;cursor:pointer;color:#fff;opacity:0;transition:opacity .4s ease,color .2s ease}
+.v2x-tl.v2x-in .v2x-tl__tick{opacity:1}
+.v2x-tl__tick::before{content:"";position:absolute;left:13px;top:18px;width:2px;height:18px;background:currentColor;transition:height .2s ease,top .2s ease}
+.v2x-tl__tick b{position:absolute;left:0;right:0;top:40px;text-align:center;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.5px}
+.v2x-tl__tick span{position:absolute;bottom:44px;left:50%;transform:translate(-50%,4px);white-space:nowrap;background:#E00404;color:#fff;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:1px;text-transform:uppercase;padding:5px 8px;opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+.v2x-tl__tick:hover,.v2x-tl__tick:focus-visible,.v2x-tl__tick.v2x-hot{color:#E00404}
+.v2x-tl__tick:hover::before,.v2x-tl__tick.v2x-hot::before{top:12px;height:28px}
+.v2x-tl__tick:hover span,.v2x-tl__tick:focus-visible span,.v2x-tl__tick.v2x-hot span{opacity:1;transform:translate(-50%,0)}
+.v2x-tl__tick.v2x-full b{text-decoration:line-through;text-decoration-thickness:2px}
+.v2x-tl__now{position:absolute;top:21px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#E00404}
+.v2x-tl__now i{position:absolute;top:-18px;left:0;font:700 11px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:1.4px;color:#E00404;text-transform:uppercase;white-space:nowrap}
+.v2x-tl__month{position:absolute;top:-6px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:1.6px;color:#8a8a8a;text-transform:uppercase;padding-left:6px;border-left:2px solid #8a8a8a;height:14px}
+
+/* ---- Égaliseur (même tempo pour tous les concerts) ---- */
+.v2x-eq{display:none;align-items:flex-end;gap:2px;height:13px;vertical-align:middle;margin-left:12px}
+body.v2x-on-eq .v2x-eq{display:inline-flex}
+.v2x-eq i{display:block;width:3px;height:100%;background:currentColor;transform-origin:bottom;transform:scaleY(.15)}
+body.v2x-on-eq /* sur les cartes : n'apparaît qu'au survol (ou quand la carte est au centre de l'écran sur mobile) */
+.v2x-card-eq{position:absolute;right:22px;bottom:30px;z-index:4;color:#fff;display:flex;align-items:center;gap:8px;font:600 12px "Barlow Condensed",sans-serif;letter-spacing:1px;text-transform:uppercase;opacity:0;transition:opacity .3s ease;pointer-events:none}
+.v2x-card-eq .v2x-eq{margin-left:0}
+.v2x-card-eq .e-loop-item.elementor-10327:hover .v2x-card-eq,.v2-in .v2x-card-eq{opacity:1}
+
+/* ---- Compte à rebours ---- */
+.v2x-cd{display:none;gap:4px;margin:4px 0 18px}
+body.v2x-on-cd .v2x-cd{display:flex}
+.v2x-cd__u{border-left:2px solid #E00404;padding:1px 14px 0 10px}
+.v2x-cd__u b{display:block;font:700 26px/1 "Barlow Condensed",sans-serif;color:#fff;font-variant-numeric:tabular-nums}
+.v2x-cd__u i{display:block;font:600 11px/1.6 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:1.4px;text-transform:uppercase;color:#8a8a8a}
+.v2x-cd__u.v2x-tickd b{animation:v2x-fade .4s ease}
+@keyframes v2x-fade{from{opacity:.3}to{opacity:1}}
+
+/* ---- Bouton « Je réserve » façon ticket (s'ajoute au wipe existant) ---- */
+body.v2x-on-ticket .elementor-button.v2-wipe.v2x-tk{position:relative;padding-right:46px!important;
+  -webkit-mask:radial-gradient(circle 5px at calc(100% - 32px) 0,#0000 97%,#000) top/100% 51% no-repeat,radial-gradient(circle 5px at calc(100% - 32px) 100%,#0000 97%,#000) bottom/100% 51% no-repeat;
+          mask:radial-gradient(circle 5px at calc(100% - 32px) 0,#0000 97%,#000) top/100% 51% no-repeat,radial-gradient(circle 5px at calc(100% - 32px) 100%,#0000 97%,#000) bottom/100% 51% no-repeat}
+.v2x-tk__stub{display:none}
+body.v2x-on-ticket .v2x-tk .v2x-tk__stub{display:flex;position:absolute;top:0;bottom:0;right:0;width:32px;align-items:center;justify-content:center;transition:transform .3s ease}
+body.v2x-on-ticket .v2x-tk .v2x-tk__stub::before{content:"";position:absolute;left:0;top:7px;bottom:7px;border-left:1.5px dashed currentColor;opacity:.5}
+body.v2x-on-ticket .v2x-tk:hover .v2x-tk__stub{transform:translateX(3px)}
+
+/* ---- Tampon COMPLET (sur les cartes déjà marquées v2-soldout par le site) ---- */
+.v2x-stamp{display:none;position:absolute;z-index:4;right:22px;top:46%;transform:rotate(-12deg);font:800 38px/1 "Barlow Condensed",sans-serif;letter-spacing:3px;color:#fff;border:4px solid #fff;padding:5px 12px 3px;opacity:0;pointer-events:none}
+body.v2x-on-stamp .v2x-stamp{display:block}
+.v2x-stamp.v2x-on{animation:v2x-stamp .5s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes v2x-stamp{from{opacity:0;transform:rotate(-12deg) scale(1.35)}to{opacity:.9;transform:rotate(-12deg) scale(1)}}
+
+/* ---- Accessibilité : mouvement réduit + options de la barre d'accessibilité ---- */
+@media (prefers-reduced-motion:reduce){
+  .v2x-tl__line,.v2x-tl__tick{transition:none!important}
+  .v2x-stamp{animation:none!important;opacity:.9}
+  body .v2x-eq{display:none!important}
+}
+body.v2x-calm .v2x-tl__line,body.v2x-calm .v2x-tl__tick{transition:none!important}
+body.v2x-calm .v2x-stamp{animation:none!important;opacity:.9}
+body.v2x-calm .v2x-eq,body.pojo-a11y-high-contrast .v2x-eq,body.pojo-a11y-grayscale .v2x-eq{display:none!important}
+@media (max-width:767px){.v2x-tl{padding:34px 16px 22px}.v2x-tl__tick b{font-size:12px}.v2x-cd__u b{font-size:22px}}
+
+/* ---- Animation au survol des affiches et de la photo du prochain concert ----
+   Une seule couche .v2x-fx (2 calques) par visuel ; le mode est choisi par une classe sur <body> : v2x-anim-glitch, -serigraphie,
+   -trame, -projecteur, -vhs, -rideau, -tempo. Uniquement rouge V2, blanc et noir. Se joue une fois à l'entrée du survol
+   (au centre de l'écran sur mobile), sauf « tempo » qui bat tant que la souris reste. */
+.v2x-host{position:relative;overflow:hidden}
+.v2x-fx{display:none;position:absolute;inset:0;z-index:2;pointer-events:none}
+body[class*="v2x-anim-"] .v2x-fx{display:block}
+.v2x-fx i{position:absolute;inset:0;background-image:var(--v2x-img);background-size:cover;background-position:center;opacity:0}
+.v2x-fx i::after{content:"";position:absolute;inset:0}
+
+/* Glitch : tranches décalées, fantôme rouge et fantôme blanc */
+.v2x-anim-glitch .v2x-fx i{filter:grayscale(1) contrast(1.4);mix-blend-mode:screen}
+.v2x-anim-glitch .v2x-fx i:first-child::after{background:#E00404;mix-blend-mode:multiply}
+.v2x-anim-glitch .v2x-host:hover .v2x-fx i:first-child,.v2x-anim-glitch .v2-in .v2x-fx i:first-child{animation:v2x-gA .55s steps(1) 1}
+.v2x-anim-glitch .v2x-host:hover .v2x-fx i:last-child,.v2x-anim-glitch .v2-in .v2x-fx i:last-child{animation:v2x-gB .55s steps(1) 1}
+@keyframes v2x-gA{
+  0%{opacity:.55;clip-path:inset(8% 0 72% 0);transform:translateX(-6px)}
+  16%{clip-path:inset(42% 0 36% 0);transform:translateX(5px)}
+  32%{clip-path:inset(70% 0 12% 0);transform:translateX(-4px)}
+  48%{clip-path:inset(20% 0 62% 0);transform:translateX(6px)}
+  66%{clip-path:inset(55% 0 28% 0);transform:translateX(-3px)}
+  84%{opacity:.3;clip-path:inset(0);transform:translateX(-2px)}
+  100%{opacity:0}}
+@keyframes v2x-gB{
+  0%{opacity:.45;clip-path:inset(62% 0 20% 0);transform:translateX(5px)}
+  20%{clip-path:inset(12% 0 78% 0);transform:translateX(-7px)}
+  40%{clip-path:inset(34% 0 48% 0);transform:translateX(4px)}
+  60%{clip-path:inset(80% 0 6% 0);transform:translateX(-5px)}
+  80%{opacity:.25;clip-path:inset(0);transform:translateX(2px)}
+  100%{opacity:0}}
+
+/* Sérigraphie : le passage rouge arrive décalé puis se recale, comme un tirage mal repéré */
+.v2x-anim-serigraphie .v2x-fx i:first-child{filter:grayscale(1) contrast(1.6) brightness(1.1);mix-blend-mode:multiply}
+.v2x-anim-serigraphie .v2x-fx i:first-child::after{background:#E00404;mix-blend-mode:screen}
+.v2x-anim-serigraphie .v2x-host:hover .v2x-fx i:first-child,.v2x-anim-serigraphie .v2-in .v2x-fx i:first-child{animation:v2x-seri .7s cubic-bezier(.3,.7,.2,1) 1}
+@keyframes v2x-seri{0%{opacity:.75;transform:translate(9px,-7px)}60%{opacity:.5;transform:translate(-1px,1px)}100%{opacity:0;transform:none}}
+
+/* Trame : une trame de points rouges se resserre puis disparaît */
+@property --v2x-dot{syntax:"<length>";inherits:false;initial-value:0px}
+.v2x-anim-trame .v2x-fx i:first-child{background:radial-gradient(circle,#E00404 0 var(--v2x-dot),transparent calc(var(--v2x-dot) + .7px)) 0 0/8px 8px;mix-blend-mode:multiply;opacity:1}
+.v2x-anim-trame .v2x-host:hover .v2x-fx i:first-child,.v2x-anim-trame .v2-in .v2x-fx i:first-child{animation:v2x-trame .8s ease 1}
+@keyframes v2x-trame{0%{--v2x-dot:0px}35%{--v2x-dot:3.4px}100%{--v2x-dot:0px}}
+
+/* Projecteur : un faisceau blanc balaie l'affiche en diagonale */
+.v2x-anim-projecteur .v2x-fx i:first-child{background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%) no-repeat;background-size:250% 100%;background-position:120% 0;mix-blend-mode:soft-light;opacity:1}
+.v2x-anim-projecteur .v2x-host:hover .v2x-fx i:first-child,.v2x-anim-projecteur .v2-in .v2x-fx i:first-child{animation:v2x-proj .9s cubic-bezier(.5,0,.3,1) 1}
+@keyframes v2x-proj{from{background-position:120% 0}to{background-position:-20% 0}}
+
+/* VHS : lignes de balayage et barre rouge qui descend, une fois */
+.v2x-anim-vhs .v2x-fx i:first-child{background:repeating-linear-gradient(0deg,rgba(0,0,0,.45) 0 1px,transparent 1px 3px)}
+.v2x-anim-vhs .v2x-fx i:last-child{background:linear-gradient(transparent,rgba(224,4,4,.55) 45%,rgba(255,255,255,.35) 50%,rgba(224,4,4,.55) 55%,transparent) no-repeat 0 -40%/100% 18%;mix-blend-mode:screen}
+.v2x-anim-vhs .v2x-host:hover .v2x-fx i:first-child,.v2x-anim-vhs .v2-in .v2x-fx i:first-child{animation:v2x-vhsA .7s steps(7) 1}
+.v2x-anim-vhs .v2x-host:hover .v2x-fx i:last-child,.v2x-anim-vhs .v2-in .v2x-fx i:last-child{animation:v2x-vhsB .7s linear 1}
+@keyframes v2x-vhsA{0%{opacity:.9;transform:translateY(0)}50%{transform:translateY(2px)}100%{opacity:0;transform:translateY(-1px)}}
+@keyframes v2x-vhsB{0%{opacity:1;background-position:0 -40%}100%{opacity:1;background-position:0 140%}}
+
+/* Rideau : un aplat rouge traverse l'affiche, même geste que les boutons « Je réserve » */
+.v2x-anim-rideau .v2x-fx i:first-child{background:#E00404;transform:scaleX(0);transform-origin:left;opacity:1}
+.v2x-anim-rideau .v2x-host:hover .v2x-fx i:first-child,.v2x-anim-rideau .v2-in .v2x-fx i:first-child{animation:v2x-rideau .6s cubic-bezier(.6,0,.2,1) 1}
+@keyframes v2x-rideau{0%{transform:scaleX(0);transform-origin:left}45%{transform:scaleX(1);transform-origin:left}55%{transform:scaleX(1);transform-origin:right}100%{transform:scaleX(0);transform-origin:right}}
+
+/* Tempo : l'image bat doucement au tempo du genre pendant le survol */
+.v2x-anim-tempo .e-loop-item.elementor-10327 > section.v2x-host[style*="--v2x-beat"]:hover::before,
+.v2x-anim-tempo .v2x-host[style*="--v2x-beat"]:hover img{animation:v2x-pulse var(--v2x-beat) cubic-bezier(.2,.8,.4,1) infinite}
+@keyframes v2x-pulse{0%{transform:scale(1.055)}30%,100%{transform:scale(1.03)}}
+
+@media (prefers-reduced-motion:reduce){.v2x-fx{display:none!important}.v2x-host img,.v2x-host::before{animation:none!important}}
+body.v2x-calm .v2x-fx,body.pojo-a11y-high-contrast .v2x-fx,body.pojo-a11y-grayscale .v2x-fx{display:none!important}
+body.v2x-calm .v2x-host img,body.v2x-calm .v2x-host::before{animation:none!important}
+
+/* ---- Grille de la prog : liseré rouge tracé au survol + croix de repérage aux croisements ----
+   Les traits blancs du site font 3px : à droite/en bas de chaque affiche, à gauche/en haut via la voisine ou le cadre. */
+.e-loop-item.elementor-10327:hover,.e-loop-item.elementor-10327:has(> .v2-in){z-index:6}
+.v2x-frame,.v2x-mark{display:none}
+body.v2x-on-grid .v2x-frame{display:block;position:absolute;top:-3px;left:-3px;right:0;bottom:0;z-index:7;pointer-events:none;
+  background:
+    linear-gradient(#E00404,#E00404) left top/0 3px no-repeat,
+    linear-gradient(#E00404,#E00404) right top/3px 0 no-repeat,
+    linear-gradient(#E00404,#E00404) right bottom/0 3px no-repeat,
+    linear-gradient(#E00404,#E00404) left bottom/3px 0 no-repeat;
+  transition:background-size .45s cubic-bezier(.6,0,.2,1)}
+body.v2x-on-grid .e-loop-item.elementor-10327:hover .v2x-frame,
+body.v2x-on-grid .e-loop-item.elementor-10327:has(> .v2-in) .v2x-frame{background-size:100% 3px,3px 100%,100% 3px,3px 100%}
+body.v2x-on-grid .v2x-mark{display:block;position:absolute;width:15px;height:15px;z-index:8;pointer-events:none;
+  background:linear-gradient(#E00404,#E00404) center/15px 3px no-repeat,linear-gradient(#E00404,#E00404) center/3px 15px no-repeat;transition:transform .35s ease}
+.v2x-mark--tl{top:-9px;left:-9px}.v2x-mark--tr{top:-9px;right:-6px}
+.v2x-mark--bl{bottom:-6px;left:-9px}.v2x-mark--br{bottom:-6px;right:-6px}
+body.v2x-on-grid .e-loop-item.elementor-10327:hover .v2x-mark{transform:rotate(90deg)}
+@media (prefers-reduced-motion:reduce){.v2x-frame,.v2x-mark{transition:none!important}}
+body.v2x-calm .v2x-frame,body.v2x-calm .v2x-mark{transition:none!important}
+
+/* ---- Ambiance du fond (sections noires du prochain concert et de « À venir ») ----
+   Mode par classe sur <body> : v2x-bg-points, v2x-bg-ondes, v2x-bg-pulse (canvas), v2x-bg-trame, v2x-bg-faisceaux (CSS) ;
+   v2x-on-grain ajoute le grain du site. Rouge V2, blanc et noir uniquement. */
+.v2x-bgsec{position:relative;overflow:hidden;overflow:clip} /* clip : laisse fonctionner la frise collante */
+.v2x-bgsec > .elementor-container{position:relative;z-index:1}
+.v2x-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.v2x-bg > *{display:none;position:absolute;inset:0}
+body.v2x-bg-points .v2x-bg__cv,body.v2x-bg-ondes .v2x-bg__cv,body.v2x-bg-pulse .v2x-bg__cv{display:block;inset:0 0 auto 0;width:100%;height:100vh;will-change:transform}
+/* trame demi-teinte : points blancs qui grossissent vers un coin, comme un dégradé d'affiche imprimée */
+body.v2x-bg-trame .v2x-bg__trame{display:block;
+  background:radial-gradient(circle,rgba(255,255,255,.10) 0 1.6px,transparent 2.1px) 0 0/12px 12px;
+  -webkit-mask:linear-gradient(160deg,transparent 25%,#000 95%);mask:linear-gradient(160deg,transparent 25%,#000 95%)}
+body.v2x-bg-trame .v2x-bg__trame::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(circle,rgba(224,4,4,.22) 0 2.6px,transparent 3.1px) 6px 6px/12px 12px;
+  -webkit-mask:radial-gradient(circle at 100% 100%,#000 0,transparent 35%);mask:radial-gradient(circle at 100% 100%,#000 0,transparent 35%)}
+/* faisceaux : trois rais de projecteur très pâles qui oscillent lentement depuis le haut */
+body.v2x-bg-faisceaux .v2x-bg__f{display:block;inset:auto;top:-10%;width:34%;height:130%;transform-origin:50% 0;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,0) 75%);clip-path:polygon(46% 0,54% 0,100% 100%,0 100%)}
+.v2x-bg__f--a{left:4%;animation:v2x-sw 17s ease-in-out infinite alternate}
+.v2x-bg__f--b{left:36%;animation:v2x-sw 23s ease-in-out -6s infinite alternate-reverse;background:linear-gradient(180deg,rgba(224,4,4,.16),rgba(224,4,4,0) 70%)!important}
+.v2x-bg__f--c{left:66%;animation:v2x-sw 20s ease-in-out -11s infinite alternate}
+@keyframes v2x-sw{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
+/* grain (le même que sur les affiches du site) */
+body.v2x-on-grain .v2x-bg__grain{display:block;opacity:.3;mix-blend-mode:soft-light;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 -.18'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+@media (prefers-reduced-motion:reduce){.v2x-bg__f{animation:none!important}}
+body.v2x-calm .v2x-bg__f{animation:none!important}
+/* le trait gris du site au-dessus de « À venir » fait doublon sous la frise */
+body.v2x-on-tl .v2x-nosep{border-top-color:transparent!important}
+
+/* ---- Compte à rebours : « Ce soir » le jour J, « En ce moment » pendant le concert ---- */
+.v2x-cd{flex-direction:column}
+.v2x-cd__units{display:flex;gap:4px}
+.v2x-cd__badge{display:none;align-items:center;gap:12px;border-left:2px solid #E00404;padding:2px 0 2px 12px}
+.v2x-cd__badge b{font:800 26px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;color:#fff;letter-spacing:.5px}
+.v2x-cd__badge span{font:600 13px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:1.4px;color:#8a8a8a}
+.v2x-cd__badge--live i{width:10px;height:10px;border-radius:50%;background:#E00404;animation:v2x-live 1.6s ease-in-out infinite}
+@keyframes v2x-live{0%,100%{opacity:1}50%{opacity:.25}}
+body.v2x-on-soir .v2x-cd--soir .v2x-cd__units,body.v2x-on-soir .v2x-cd--live .v2x-cd__units{display:none}
+body.v2x-on-soir .v2x-cd--soir .v2x-cd__badge--soir,body.v2x-on-soir .v2x-cd--live .v2x-cd__badge--live{display:flex}
+.v2x-cd--past{display:none!important}
+
+/* ---- Barre de progression (le style .v2-progress vient du site ; on ne fait que l'afficher) ---- */
+.v2x-prog{display:none}
+body.v2x-on-prog .v2x-prog{display:block}
+
+/* ---- Repère de lecture : frise collante sous l'en-tête + trait rouge jusqu'à l'affiche à l'écran ---- */
+.v2x-tl__read{position:absolute;left:0;top:26px;height:2px;width:0;background:#E00404;transition:width .45s cubic-bezier(.6,0,.2,1);display:none}
+body.v2x-on-read .v2x-tl__read{display:block}
+/* le thème met #layout et body en overflow:hidden, ce qui empêche tout « sticky » ; clip rogne pareil sans casser le sticky */
+body.v2x-on-read{overflow-x:clip!important;overflow-y:visible!important}
+body.v2x-on-read #layout{overflow:clip!important}
+body.v2x-on-read .v2x-tl{position:sticky;top:var(--v2x-hd,0px);z-index:20;transition:padding .25s ease,background-color .25s ease}
+body.v2x-on-read .v2x-tl.v2x-stuck{background:rgba(13,13,13,.94);padding-top:26px;padding-bottom:16px;box-shadow:0 1px 0 #2a2a2a}
+body.v2x-on-read .v2x-tl.v2x-stuck .v2x-tl__month,body.v2x-on-read .v2x-tl.v2x-stuck .v2x-tl__now i{opacity:0}
+.v2x-tl__tick.v2x-cur{color:#E00404}
+.v2x-tl__tick.v2x-cur::before{top:12px;height:28px}
+
+/* ---- Arrivée des contenus : montée douce + fondu, en cascade (esprit leferrailleur.fr) ---- */
+body.v2x-on-arrive .v2x-a{opacity:0;transform:translate3d(0,34px,0)}
+body.v2x-on-arrive .v2x-a--x{transform:translate3d(-36px,0,0)}
+body.v2x-on-arrive .v2x-a--img{transform:translate3d(0,40px,0) scale(1.02)}
+body.v2x-on-arrive .v2x-a.v2x-a-in{opacity:1;transform:none;
+  transition:opacity 1s cubic-bezier(.23,1,.32,1) var(--v2x-d,0s),transform 1.2s cubic-bezier(.23,1,.32,1) var(--v2x-d,0s)}
+/* affiches : l'image (::before du site) et le texte arrivent, la case reste */
+.e-loop-item.elementor-10327 > section.v2x-ca::before{transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .45s ease,opacity 1.1s cubic-bezier(.23,1,.32,1) var(--v2x-d,0s)}
+body.v2x-on-arrive .e-loop-item.elementor-10327 > section.v2x-ca:not(.v2x-a-in)::before{opacity:0;transform:scale(1.06)}
+.e-loop-item.elementor-10327 > section.v2x-ca > .elementor-container{transition:opacity 1s cubic-bezier(.23,1,.32,1) calc(var(--v2x-d,0s) + .15s),transform 1.2s cubic-bezier(.23,1,.32,1) calc(var(--v2x-d,0s) + .15s)}
+body.v2x-on-arrive .e-loop-item.elementor-10327 > section.v2x-ca:not(.v2x-a-in) > .elementor-container{opacity:0;transform:translate3d(0,24px,0)}
+@media (prefers-reduced-motion:reduce){body .v2x-a,body .v2x-ca::before,body .v2x-ca > .elementor-container{opacity:1!important;transform:none!important}}
+body.v2x-calm .v2x-ca::before,body.v2x-calm .v2x-ca > .elementor-container{opacity:1!important;transform:none!important;transition:none!important}
+body.v2x-calm .v2x-a{opacity:1!important;transform:none!important;transition:none!important}

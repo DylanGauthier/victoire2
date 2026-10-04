@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Victoire 2 — démo effets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Montserrat:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#ea0404; --red-d:#b00303; --ink:#0b0b0b; --ink2:#141414; --line:#2a2a2a;
+  --paper:#fff; --mute:#9a9a9a;
+  --cond:"Barlow Condensed", Impact, sans-serif;
+  --sans:Montserrat, system-ui, sans-serif;
+  --mono:"Share Tech Mono", ui-monospace, monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--paper);font-family:var(--sans);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ---------- HEADER (blanc, comme le site) ---------- */
+header{background:#fff;color:#000;position:relative;z-index:5}
+.hd{max-width:1240px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:24px}
+.logo{width:92px;flex:none;transform-origin:50% 60%}
+.logo svg{width:100%;height:auto;display:block}
+.logo small{display:block;font:800 11px/1 var(--sans);letter-spacing:.12em;text-align:center;margin-top:6px}
+nav{display:flex;gap:28px;margin-left:auto;font:800 15px var(--cond);letter-spacing:.06em;text-transform:uppercase}
+nav a{position:relative;padding:4px 0}
+nav a::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:3px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+nav a:hover::after{transform:scaleX(1)}
+.phones{display:flex;gap:6px}
+.phones span{background:#000;color:#fff;font:700 10px var(--sans);padding:9px 12px;letter-spacing:.04em}
+
+/* ---------- HERO ---------- */
+.hero{max-width:1240px;margin:0 auto;padding:64px 24px 56px;display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:center}
+.kicker{display:flex;align-items:center;gap:14px;color:var(--red);font:800 15px var(--cond);letter-spacing:.14em;text-transform:uppercase}
+.date{color:var(--red);font:800 18px var(--cond);letter-spacing:.06em;text-transform:uppercase;margin-top:10px}
+.hero h1{font:900 clamp(56px,8vw,104px)/.88 var(--cond);text-transform:uppercase;margin:10px 0 18px;letter-spacing:-.01em}
+.lineup{font:500 16px var(--sans);color:#ddd}
+.genre{font:800 13px var(--cond);letter-spacing:.14em;color:var(--mute);margin-top:14px;text-transform:uppercase;display:flex;align-items:center;gap:12px}
+.ctas{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;font:800 13px var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:14px 22px;border:2px solid var(--red);background:var(--red);color:#fff;cursor:pointer}
+.btn.ghost{background:transparent;border-color:#fff}
+.btn.sm{font-size:10.5px;padding:8px 12px;border-width:1.5px}
+
+/* ---------- PHOTO duotone + survols ---------- */
+.ph{position:relative;overflow:hidden;background:#222;isolation:isolate}
+.ph .l{position:absolute;inset:0;background:var(--img) center/cover no-repeat, linear-gradient(135deg,#3a0a0a,#111)}
+.ph .base{filter:grayscale(1) contrast(1.15) brightness(.95);transition:filter .4s, transform .6s}
+.ph .tint{background:var(--red);mix-blend-mode:multiply;opacity:.85;transition:opacity .4s}
+.ph .g1,.ph .g2,.ph .ht{opacity:0;pointer-events:none}
+.ph .g1{filter:grayscale(1) contrast(1.4);mix-blend-mode:screen}
+.ph .g1::after,.ph .g2::after{content:"";position:absolute;inset:0;mix-blend-mode:multiply}
+.ph .g1::after{background:#00f0ff}
+.ph .g2{filter:grayscale(1) contrast(1.4);mix-blend-mode:screen}
+.ph .g2::after{background:#ff1a1a}
+.ph .ht{background:radial-gradient(circle at 50% 50%, #000 0 var(--dot,0px), transparent calc(var(--dot,0px) + .6px)) 0 0/7px 7px;mix-blend-mode:multiply;transition:opacity .35s}
+/* mode glitch */
+body.fx-photo-glitch .ph:hover .g1{opacity:.5;animation:glitchA .5s steps(1) 1 forwards}
+body.fx-photo-glitch .ph:hover .g2{opacity:.4;animation:glitchB .5s steps(1) 1 forwards}
+body.fx-photo-glitch .ph:hover .base{transform:scale(1.03)}
+@keyframes glitchA{
+  0%{clip-path:inset(8% 0 72% 0);transform:translate(-7px,0)}
+  14%{clip-path:inset(40% 0 38% 0);transform:translate(6px,0)}
+  28%{clip-path:inset(70% 0 12% 0);transform:translate(-4px,0)}
+  42%{clip-path:inset(0 0 0 0);transform:translate(-3px,0)}
+  60%{clip-path:inset(22% 0 60% 0);transform:translate(8px,0)}
+  78%{clip-path:inset(55% 0 25% 0);transform:translate(-6px,0)}
+  100%{clip-path:inset(0 0 0 0);transform:translate(-2px,0)}}
+@keyframes glitchB{
+  0%{clip-path:inset(60% 0 20% 0);transform:translate(6px,0)}
+  18%{clip-path:inset(10% 0 80% 0);transform:translate(-8px,0)}
+  36%{clip-path:inset(0 0 0 0);transform:translate(3px,0)}
+  54%{clip-path:inset(80% 0 5% 0);transform:translate(-5px,0)}
+  72%{clip-path:inset(30% 0 50% 0);transform:translate(7px,0)}
+  100%{clip-path:inset(0 0 0 0);transform:translate(2px,0)}}
+/* mode trame */
+body.fx-photo-trame .ph .ht{opacity:1}
+body.fx-photo-trame .ph:hover .ht{--dot:2.6px}
+body.fx-photo-trame .ph:hover .base{filter:grayscale(1) contrast(1.8) brightness(1.15)}
+@property --dot{syntax:"<length>";inherits:true;initial-value:0px}
+body.fx-photo-trame .ph .ht{transition:--dot .45s ease, opacity .3s}
+/* mode couleur */
+body.fx-photo-couleur .ph:hover .base{filter:grayscale(.15);transform:scale(1.02)}
+.ph .base{transition:filter .7s ease, transform 1.2s ease}.ph .tint{transition:opacity .7s ease}
+body.fx-photo-couleur .ph:hover .tint{opacity:.25}
+
+.hero .ph{aspect-ratio:4/3}
+
+/* ---------- BANDEAU LED ---------- */
+.ticker{display:none;position:relative;border-block:1px solid var(--line);background:var(--ink);overflow:hidden;height:40px}
+body.fx-ticker .ticker{display:block}
+.ticker .track{position:absolute;top:0;left:0;display:flex;white-space:nowrap;height:100%;align-items:center;animation:tick 70s linear infinite}
+.ticker:hover .track{animation-play-state:paused}
+.ticker span{font:700 15px/1 var(--cond);letter-spacing:.14em;color:#cfcfcf;text-transform:uppercase;padding-right:.8em}
+.ticker span b{color:var(--red);font-weight:800}
+.ticker::before,.ticker::after{content:"";position:absolute;top:0;bottom:0;width:80px;z-index:1;pointer-events:none}
+.ticker::before{left:0;background:linear-gradient(90deg,var(--ink),transparent)}.ticker::after{right:0;background:linear-gradient(-90deg,var(--ink),transparent)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* ---------- COMPTE À REBOURS ---------- */
+.cd{display:none;align-items:stretch;gap:6px;margin-top:22px}
+body.fx-countdown .cd{display:flex}
+.cd .u{border-left:2px solid var(--red);padding:2px 10px 0;text-align:left;min-width:56px}
+.cd .u b{display:block;font:700 26px/1 var(--cond);color:#fff;font-variant-numeric:tabular-nums}
+
+.cd .u i{font:700 9px var(--sans);font-style:normal;letter-spacing:.16em;color:#777;text-transform:uppercase}
+.cd .sep{display:none}
+.cd .u.flip b{animation:flip .35s ease}
+@keyframes flip{0%{opacity:.35}100%{opacity:1}}
+
+/* ---------- ÉGALISEUR ---------- */
+.eq{display:none;align-items:flex-end;gap:2px;height:18px}
+body.fx-eq .eq{display:inline-flex}
+.eq i{display:block;width:3px;height:100%;background:currentColor;transform-origin:bottom;transform:scaleY(.15)}
+.hero .eq{height:14px;color:var(--red);opacity:.85}
+.hero .eq i{width:3px}
+.bpm{display:none;font:400 12px var(--mono);color:#777;letter-spacing:.06em}
+body.fx-eq .bpm{display:inline}
+
+/* ---------- À VENIR ---------- */
+.sec{max-width:1240px;margin:0 auto;padding:56px 24px 72px}
+.sec-h{display:flex;align-items:flex-end;justify-content:space-between;border-top:1px solid var(--line);padding-top:36px;margin-bottom:26px}
+.sec-h h2{font:900 64px/.9 var(--cond);text-transform:uppercase}
+.sec-h a{font:800 13px var(--cond);letter-spacing:.12em;text-transform:uppercase;border-bottom:2px solid #fff;padding-bottom:3px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #fff}
+.card{position:relative;border:1px solid #fff;min-height:400px;display:flex;flex-direction:column}
+.card .ph{position:absolute;inset:0;z-index:0}
+.card .ph .tint{opacity:.78}
+.card .shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent 40%,transparent 62%,rgba(0,0,0,.7))}
+.card .in{position:relative;z-index:2;padding:16px;display:flex;flex-direction:column;height:100%;flex:1;pointer-events:none}
+.card .in > *{pointer-events:auto}
+.tag{align-self:flex-start;background:var(--red);font:800 12px var(--cond);letter-spacing:.08em;padding:4px 8px;text-transform:uppercase}
+.card h3{font:900 34px/.92 var(--cond);text-transform:uppercase;margin-top:12px;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.card p{font:700 14px var(--cond);letter-spacing:.04em;text-transform:uppercase;margin-top:8px;color:#eee}
+.card .foot{margin-top:auto;display:flex;gap:8px;align-items:center}
+.card .foot .eq{margin-left:auto;color:#fff;opacity:0;transition:opacity .25s}
+.card:hover .foot .eq{opacity:1}
+.card .foot .bpm{color:#ddd;opacity:0;transition:opacity .25s}
+.card:hover .foot .bpm{opacity:1}
+
+/* ---------- TICKET ---------- */
+.tk{display:none}
+body.fx-ticket .btn.res{display:none}
+body.fx-ticket .tk{display:inline-flex}
+.tk{align-items:stretch;cursor:pointer;font:800 13px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:#fff;filter:drop-shadow(0 3px 0 rgba(0,0,0,.35))}
+.tk .m,.tk .s{background:var(--red);display:flex;align-items:center}
+.tk .m{padding:14px 18px 14px 22px;
+  -webkit-mask:radial-gradient(circle 7px at 100% 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle 7px at 100% 100%,#0000 98%,#000) bottom/100% 51% no-repeat;
+          mask:radial-gradient(circle 7px at 100% 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle 7px at 100% 100%,#0000 98%,#000) bottom/100% 51% no-repeat}
+.tk .s{padding:0 16px 0 14px;position:relative;transform-origin:0 100%;transition:transform .35s cubic-bezier(.3,1.6,.5,1);
+  -webkit-mask:radial-gradient(circle 7px at 0 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle 7px at 0 100%,#0000 98%,#000) bottom/100% 51% no-repeat;
+          mask:radial-gradient(circle 7px at 0 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle 7px at 0 100%,#0000 98%,#000) bottom/100% 51% no-repeat}
+.tk .s::before{content:"";position:absolute;left:0;top:9px;bottom:9px;border-left:2px dashed rgba(255,255,255,.55)}
+.tk .s em{font-style:normal;font:400 10px var(--mono);letter-spacing:.04em;opacity:.85;margin-right:6px}
+.tk:hover .s{transform:translate(3px,1px) rotate(4deg)}
+.tk:hover .m{background:#ff1616}
+.tk.sm{font-size:10.5px}
+.tk.sm .m{padding:9px 12px 9px 13px}
+.tk.sm .s{padding:0 10px 0 9px}
+.tk.sm .m{-webkit-mask-size:100% 51%;mask-size:100% 51%}
+
+/* ---------- TAMPON COMPLET ---------- */
+.stamp{display:none;position:absolute;z-index:3;right:18px;top:46%;transform:rotate(-14deg);
+  font:900 44px/1 var(--cond);letter-spacing:.08em;color:#fff;border:5px solid #fff;padding:6px 14px 4px;
+  text-shadow:0 1px 0 rgba(0,0,0,.25);box-shadow:0 1px 0 rgba(0,0,0,.25);
+  pointer-events:none;opacity:0}
+body.fx-ticket .stamp{display:block}
+.stamp.on{animation:slam .5s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes slam{0%{opacity:0;transform:rotate(-14deg) scale(1.35)}100%{opacity:.9;transform:rotate(-14deg) scale(1)}}
+.card.shake{animation:shake .3s .25s}
+@keyframes shake{0%,100%{transform:none}25%{transform:translate(2px,1px)}50%{transform:translate(-2px,-1px)}75%{transform:translate(1px,0)}}
+
+/* ---------- LOGO TAMPON ---------- */
+body.fx-logo .logo.go{animation:logoStamp .55s cubic-bezier(.2,.9,.3,1.3) both}
+@keyframes logoStamp{0%{opacity:0;transform:scale(1.18) rotate(-3deg)}100%{opacity:1;transform:none}}
+
+@keyframes hdShake{0%,100%{transform:none}33%{transform:translateY(2px)}66%{transform:translateY(-1px)}}
+
+/* ---------- GRAIN ---------- */
+.grain{position:fixed;inset:-50%;z-index:50;pointer-events:none;display:none;opacity:.06;mix-blend-mode:overlay;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
+body.fx-grain .grain{display:block}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-6%,4%)}40%{transform:translate(5%,-7%)}60%{transform:translate(-3%,8%)}80%{transform:translate(7%,2%)}100%{transform:translate(0,0)}}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--line);max-width:1240px;margin:0 auto;padding:40px 24px 120px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;font-size:13px;color:#bbb;line-height:1.7}
+footer h4{font:800 15px var(--cond);letter-spacing:.12em;color:#fff;margin-bottom:8px}
+
+/* ---------- PANNEAU DÉMO ---------- */
+.panel{position:fixed;right:16px;bottom:16px;z-index:60;width:270px;background:#fff;color:#000;border:2px solid #000;box-shadow:6px 6px 0 var(--red);font:600 13px var(--sans)}
+.panel .t{display:flex;justify-content:space-between;align-items:center;background:#000;color:#fff;padding:9px 12px;font:800 14px var(--cond);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.panel .b{padding:10px 12px 12px;display:grid;gap:7px}
+.panel.min .b{display:none}
+.panel label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.panel input{accent-color:var(--red);width:15px;height:15px}
+.panel select{font:600 12px var(--sans);padding:3px 4px;border:1.5px solid #000;margin-left:auto}
+.panel .row{display:flex;align-items:center;gap:8px}
+.panel .hint{font:500 11px/1.4 var(--sans);color:#666;border-top:1px solid #ddd;padding-top:7px;margin-top:2px}
+.panel button{font:800 11px var(--sans);letter-spacing:.06em;text-transform:uppercase;border:1.5px solid #000;background:#fff;padding:5px 8px;cursor:pointer}
+.panel button:hover{background:#000;color:#fff}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:900px){
+  nav,.phones{display:none}
+  .hero{grid-template-columns:1fr;gap:28px;padding-top:32px}
+  .grid{grid-template-columns:1fr}
+  .sec-h h2{font-size:46px}
+  footer{grid-template-columns:1fr}
+  .panel{left:16px;right:16px;width:auto}
+}
+
+/* ---------- MOUVEMENT RÉDUIT ---------- */
+body.calm *, body.calm *::before, body.calm *::after{animation:none !important;transition:none !important}
+body.calm .stamp{opacity:.95}
+</style>
+</head>
+<body class="fx-ticker fx-countdown fx-eq fx-photo-couleur fx-ticket fx-logo">
+
+<div class="grain" aria-hidden="true"></div>
+
+<header>
+  <div class="hd">
+    <a class="logo" href="#" aria-label="Victoire 2">
+      <!-- approximation du logo -->
+      <svg viewBox="0 0 100 92" aria-hidden="true">
+        <path d="M6 5 L94 3 L96 88 L4 90 Z" fill="none" stroke="#000" stroke-width="7" stroke-linejoin="round"/>
+        <path d="M16 22 L33 72 L50 22" fill="none" stroke="#000" stroke-width="9" stroke-linejoin="miter"/>
+        <path d="M56 32 C58 18 82 16 83 31 C84 44 64 54 57 72 L86 72" fill="none" stroke="#000" stroke-width="9" stroke-linejoin="round"/>
+      </svg>
+      <small>VICTOIRE 2</small>
+    </a>
+    <nav><a href="#">La prog'</a><a href="#">Billetterie</a><a href="#">Les studios</a><a href="#">Infos</a></nav>
+    <div class="phones"><span>ACCUEIL 04 67 47 91 00</span><span>STUDIOS 04 67 20 13 62</span></div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="ph" style="--img:url('https://www.victoire2.com/wp-content/uploads/2026/07/GJ106-1-photo-CURVE-DX-officiel-CONTRAST-PHOTO-by-Thomas-HardyPROFIL-uncut-large-fb-cut-contraste-1-768x576.jpg')">
+      <div class="l base"></div><div class="l tint"></div><div class="l g1"></div><div class="l g2"></div><div class="l ht"></div>
+    </div>
+    <div>
+      <div class="kicker">Prochain concert <span class="eq" data-bpm="132" data-bars="6"></span></div>
+      <div class="date">Vendredi 9 octobre</div>
+      <h1>Club V2</h1>
+      <div class="lineup">w/ GJ106 + Angle mort &amp; clignotant + Bold Abrupt</div>
+      <div class="genre">Techno / EBM / Krautrock <span class="bpm">≈ 132 BPM</span></div>
+      <div class="cd" data-target="2026-10-09T23:00:00+02:00" aria-label="Compte à rebours avant le concert">
+        <div class="u"><b data-ghost="88">00</b><i>jours</i></div><span class="sep">:</span>
+        <div class="u"><b data-ghost="88">00</b><i>heures</i></div><span class="sep">:</span>
+        <div class="u"><b data-ghost="88">00</b><i>min</i></div><span class="sep">:</span>
+        <div class="u"><b data-ghost="88">00</b><i>sec</i></div>
+      </div>
+      <div class="ctas">
+        <a class="btn res" href="#">Réservation</a>
+        <a class="tk" href="#"><span class="m">Réservation</span><span class="s"><em>N°0910</em>→</span></a>
+        <a class="btn ghost" href="#">Infos →</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true"><div class="track"></div></div>
+
+  <section class="sec">
+    <div class="sec-h"><h2>À venir</h2><a href="#">Toute la programmation →</a></div>
+    <div class="grid" id="grid"></div>
+  </section>
+</main>
+
+<footer>
+  <div><h4>VICTOIRE 2</h4>2 rue Théophraste Renaudot<br>34430 Saint-Jean-de-Védas<br>Accueil 04 67 47 91 00</div>
+  <div><h4>INFOS UTILES</h4>Programmation · Infos pratiques<br>Accessibilité · Version FALC<br>Studios de répétition</div>
+  <div><h4>DÉMO</h4>Maquette non officielle, uniquement pour illustrer des effets. Contenus et visuels issus de victoire2.com.</div>
+</footer>
+
+<aside class="panel" id="panel">
+  <div class="t" id="pt">Effets démo <span id="pmin">—</span></div>
+  <div class="b">
+    <label><input type="checkbox" data-fx="ticker" checked> Bandeau défilant</label>
+    <label><input type="checkbox" data-fx="eq" checked> Égaliseur au tempo du genre</label>
+    <div class="row"><label><input type="checkbox" id="phOn" checked> Survol photos</label>
+      <select id="phMode"><option value="couleur">Couleur</option><option value="trame">Trame</option><option value="glitch">Glitch</option></select></div>
+    <label><input type="checkbox" data-fx="ticket" checked> Ticket + tampon COMPLET</label>
+    <label><input type="checkbox" data-fx="countdown" checked> Compte à rebours</label>
+    <label><input type="checkbox" data-fx="grain"> Grain d'impression</label>
+    <div class="row"><label><input type="checkbox" data-fx="logo" checked> Logo tampon</label><button id="replay">Rejouer</button></div>
+    <label><input type="checkbox" id="calm"> Réduire les animations</label>
+    <div class="hint">Réglages par défaut : version sobre. Survole les cartes. Le tampon COMPLET apparaît quand la carte A6EL arrive à l'écran.</div>
+  </div>
+</aside>
+
+<script>
+const U='https://www.victoire2.com/wp-content/uploads/';
+const events=[
+  {d:'10 + 11 octobre',t:'Les états généraux du metal #4',s:'Dans le cadre du festival Ex Tenebris Lux – Acte VIII',img:'2026/07/EGM.png',bpm:184,g:'metal'},
+  {d:'Dimanche 11 octobre',t:'Metal for kids',s:'Spectacle jeune public de Smash Hit Combo',img:'2026/07/ANNONCE-PRG-AUTOMNE26.png',bpm:168,g:'metal'},
+  {d:'Mardi 13 octobre',t:'Atelier',s:'Répéter mieux pour jouer mieux',img:'2026/07/IRNC4048-scaled.jpg',bpm:0},
+  {d:'Jeudi 15 octobre',t:'A6EL + Romsii',s:'Hip hop / rap',img:'2026/06/bc42473d-16ac-43c7-8e55-4b691feb971c.jpg',bpm:92,full:true},
+  {d:'Samedi 17 octobre',t:'Fredz + Hipo',s:'Chanson / soul / R’n’B',img:'2026/06/FREDZ_DECEMBER-HQ-2-1.jpeg',bpm:78},
+  {d:'Mardi 20 octobre',t:'Réunion d’information',s:'Les Inouïs – dispositif national de repérage',img:'2026/07/inouis-1.jpg',bpm:0},
+  {d:'Mercredi 21 octobre',t:'Atelier',s:'Initiation au DJing (en mixité choisie)',img:'2026/07/DJ-SET-TRANSFORME_%C2%A9Gwendal-Le-Flem-12-scaled.jpg',bpm:124},
+  {d:'Samedi 24 octobre',t:'Chinese Man Records party',s:'Hip hop / dub',img:'2026/05/cmrparty_victoire2_story.png',bpm:86},
+  {d:'Samedi 31 octobre',t:'Passi live band + Tanis',s:'Hip hop / rap',img:'2026/06/Passi-Ma-BO-%C2%A9-Fifou-2-1.jpeg',bpm:94},
+];
+const PH=img=>`<div class="ph" style="--img:url('${U+img}')"><div class="l base"></div><div class="l tint"></div><div class="l g1"></div><div class="l g2"></div><div class="l ht"></div></div>`;
+const num=i=>String(1011+i*37).slice(-4);
+document.getElementById('grid').innerHTML=events.map((e,i)=>`
+  <article class="card">${PH(e.img)}<div class="shade"></div>
+    ${e.full?'<div class="stamp">COMPLET</div>':''}
+    <div class="in">
+      <span class="tag">${e.d}</span><h3>${e.t}</h3><p>${e.s}</p>
+      <div class="foot">
+        <a class="btn sm res" href="#">Je réserve</a>
+        <a class="tk sm" href="#"><span class="m">Je réserve</span><span class="s"><em>N°${num(i)}</em>→</span></a>
+        <a class="btn sm ghost" href="#">Infos</a>
+        ${e.bpm?`<span class="bpm">${e.bpm} BPM</span><span class="eq" data-bpm="${e.bpm}" data-bars="5"></span>`:''}
+      </div>
+    </div>
+  </article>`).join('');
+// image en ligne mais toutes les copies (base, glitch) partagent --img : rien d'autre à faire
+
+/* ---- bandeau ---- */
+const items=['<b>Prochain concert</b>','Club V2 · ven 9 oct','GJ106 + Angle mort &amp; clignotant + Bold Abrupt','Techno / EBM / Krautrock','<b>●</b>','Les états généraux du metal #4 · 10+11 oct','A6EL + Romsii · <b>complet</b>','Chinese Man Records party · 24 oct','<b>●</b>'];
+const line=items.map(x=>`<span>${x} ·</span>`).join('');
+document.querySelector('.ticker .track').innerHTML=line+line;
+
+/* ---- compte à rebours ---- */
+const cd=document.querySelector('.cd'), cells=[...cd.querySelectorAll('b')], target=new Date(cd.dataset.target);
+// la date de la démo est fixée au 9 oct 2026 23h ; si elle est passée, on vise J+5 pour garder l'effet
+let tgt=target.getTime(); if(tgt<Date.now()) tgt=Date.now()+5*864e5+3*36e5;
+function tickCd(){
+  let s=Math.max(0,Math.floor((tgt-Date.now())/1000));
+  const v=[Math.floor(s/86400),Math.floor(s%86400/3600),Math.floor(s%3600/60),s%60].map(n=>String(n).padStart(2,'0'));
+  v.forEach((x,i)=>{if(cells[i].textContent!==x){cells[i].textContent=x;const u=cells[i].parentNode;u.classList.remove('flip');void u.offsetWidth;u.classList.add('flip')}});
+}
+tickCd(); setInterval(tickCd,1000);
+
+/* ---- égaliseur : un seul rAF pour tous ---- */
+const eqs=[...document.querySelectorAll('.eq')].map(el=>{
+  const n=+el.dataset.bars; el.innerHTML='<i></i>'.repeat(n);
+  return {el,bars:[...el.children],bpm:+el.dataset.bpm,seed:Math.random()*100,lv:new Array(n).fill(.15)};
+});
+const body=document.body;
+function frame(t){
+  if(body.classList.contains('fx-eq') && !body.classList.contains('calm')){
+    for(const q of eqs){
+      if(q.el.offsetParent===null) continue;
+      const beat=60000/q.bpm, ph=((t+q.seed*50)%beat)/beat;      // 0..1 dans la mesure
+      const kick=Math.pow(1-ph,3);                                   // attaque sur le temps
+      const off=((t+q.seed*50+beat/2)%beat)/beat, snare=Math.pow(1-off,5)*.6; // contretemps
+      q.bars.forEach((b,i)=>{
+        const f=i/(q.bars.length-1);                                  // grave → aigu
+        const target=.12+ kick*(1-f)*.85 + snare*f*.8 + .18*Math.abs(Math.sin(t/(170+i*37)+q.seed+i));
+        q.lv[i]+= (Math.min(1,target)-q.lv[i])*(target>q.lv[i]?.55:.18);
+        b.style.transform=`scaleY(${q.lv[i].toFixed(3)})`;
+      });
+    }
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ---- tampon COMPLET au scroll ---- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){const st=e.target.querySelector('.stamp');st.classList.add('on');io.unobserve(e.target)}
+}),{threshold:.6});
+document.querySelectorAll('.card').forEach(c=>{if(c.querySelector('.stamp'))io.observe(c)});
+
+/* ---- logo ---- */
+function stampLogo(){const l=document.querySelector('.logo'),h=document.querySelector('header');[l,h].forEach(x=>{x.classList.remove('go');void x.offsetWidth;x.classList.add('go')})}
+stampLogo();
+
+/* ---- panneau ---- */
+document.querySelectorAll('[data-fx]').forEach(cb=>cb.addEventListener('change',()=>{
+  body.classList.toggle('fx-'+cb.dataset.fx,cb.checked);
+  if(cb.dataset.fx==='ticket'&&cb.checked) document.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');void s.offsetWidth;s.classList.add('on')});
+}));
+const phOn=document.getElementById('phOn'), phMode=document.getElementById('phMode');
+function setPh(){['glitch','trame','couleur'].forEach(m=>body.classList.remove('fx-photo-'+m));if(phOn.checked)body.classList.add('fx-photo-'+phMode.value)}
+phOn.onchange=setPh; phMode.onchange=()=>{phOn.checked=true;setPh()};
+document.getElementById('replay').onclick=stampLogo;
+const calm=document.getElementById('calm');
+calm.onchange=()=>body.classList.toggle('calm',calm.checked);
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){calm.checked=true;body.classList.add('calm')}
+if(innerWidth<900){document.getElementById('panel').classList.add('min');document.getElementById('pmin').textContent='+'}
+document.getElementById('pt').onclick=()=>{const p=document.getElementById('panel');p.classList.toggle('min');document.getElementById('pmin').textContent=p.classList.contains('min')?'+':'—'};
+</script>
+</body>
+</html>

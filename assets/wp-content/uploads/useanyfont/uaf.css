@@ -1,0 +1,16 @@
+				@font-face {
+					font-family: 'miso';
+					src: url('136Miso.woff2') format('woff2'),
+						url('136Miso.woff') format('woff');
+					  font-display: auto;
+				}
+
+				.miso{font-family: 'miso' !important;}
+
+						h6{
+					font-family: 'miso' !important;
+				}
+						.menu-menu-bottom-container li a, .menu-menu-bottom-container li span, #menu-menu-bottom li a, #menu-menu-bottom li span{
+					font-family: 'miso' !important;
+				}
+		
