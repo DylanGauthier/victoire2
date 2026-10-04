@@ -62,6 +62,9 @@
     /* -- Cartes « À venir » : égaliseur au survol, glitch, ticket, tampon -- */
     var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(e){
       if(e.isIntersecting){var s=e.target.querySelector('.v2x-stamp');if(s)s.classList.add('v2x-on');io.unobserve(e.target)}})},{threshold:.6}):null;
+    var stamps=[]; // tampon à l'échelle de la carte : le mot occupe ~85 % de la largeur
+    function sizeStamps(){stamps.forEach(function(x){x.st.style.setProperty('--v2x-sf',Math.round(x.sec.offsetWidth*.21)+'px')})}
+    addEventListener('resize',sizeStamps);
     cards.forEach(function(card){
       var sec=card.querySelector(':scope > section');if(!sec)return;
       var fr=document.createElement('span');fr.className='v2x-frame';fr.setAttribute('aria-hidden','true');card.appendChild(fr);
@@ -69,8 +72,9 @@
       var b=bpmFor(clean(card));
       if(b){var w=document.createElement('div');w.className='v2x-card-eq';w.appendChild(eqEl(b,5));sec.appendChild(w)}
       addFx(sec,getComputedStyle(sec).backgroundImage,b);
-      if(card.querySelector('.v2-soldout')){var st=document.createElement('div');st.className='v2x-stamp';st.setAttribute('aria-hidden','true');st.textContent='COMPLET';sec.appendChild(st);if(io)io.observe(card);else st.classList.add('v2x-on')}
+      if(card.querySelector('.v2-soldout')){var st=document.createElement('div');st.className='v2x-stamp';st.setAttribute('aria-hidden','true');st.textContent='COMPLET';sec.appendChild(st);stamps.push({st:st,sec:sec});if(io)io.observe(card);else st.classList.add('v2x-on')}
     });
+    sizeStamps();
     [].slice.call(document.querySelectorAll(HERO+' .elementor-button.v2-wipe,'+CARD+' .elementor-button.v2-wipe')).forEach(function(a){
       if(a.querySelector('.v2x-tk__stub'))return;
       a.classList.add('v2x-tk');var s=document.createElement('span');s.className='v2x-tk__stub';s.setAttribute('aria-hidden','true');s.textContent='→';a.appendChild(s);
@@ -108,8 +112,10 @@
       /* Repère de lecture : la frise reste sous l'en-tête et un trait rouge avance jusqu'à la date de l'affiche à l'écran */
       var read=document.createElement('div');read.className='v2x-tl__read';rail.insertBefore(read,rail.children[1]);
       var ticks=[].slice.call(rail.querySelectorAll('.v2x-tl__tick'));
-      var fixedHd=[].slice.call(document.querySelectorAll('header, header *')).filter(function(e){var p=getComputedStyle(e).position;return p==='fixed'||p==='sticky'});
-      function hdBottom(){var b=0;fixedHd.forEach(function(e){var r=e.getBoundingClientRect(),p=getComputedStyle(e).position;if((p==='fixed'||p==='sticky')&&r.top<=1&&r.height>0&&r.height<220)b=Math.max(b,r.bottom)});return b}
+      // l'en-tête du thème ne devient collant qu'après un peu de scroll : on le cherche à chaque fois
+      function hdBottom(){var b=0;[].slice.call(document.querySelectorAll('header, .header_is_sticky, header [class*="sticky"]')).forEach(function(e){var p=getComputedStyle(e).position,r=e.getBoundingClientRect();if((p==='fixed'||p==='sticky')&&r.top<=1&&r.height>0&&r.height<220)b=Math.max(b,r.bottom)});return b}
+      // bord à bord : la frise annule les marges latérales de la section
+      function bleed(){tl.style.marginLeft=tl.style.marginRight='0';var pr=tl.parentNode.getBoundingClientRect(),r=tl.getBoundingClientRect(),dw=document.documentElement.clientWidth;tl.style.marginLeft=-r.left+'px';tl.style.marginRight=-(dw-r.right)+'px'}
       var readT=false;
       function onRead(){readT=false;
         var on=body.classList.contains('v2x-on-read'), hd=hdBottom();
@@ -122,7 +128,7 @@
         ticks.forEach(function(a,i){a.classList.toggle('v2x-cur',i===best)});
       }
       addEventListener('scroll',function(){if(!readT){readT=true;requestAnimationFrame(onRead)}},{passive:true});
-      addEventListener('resize',onRead);onRead();
+      addEventListener('resize',function(){bleed();onRead()});bleed();onRead();
     }
 
     /* -- Ambiance du fond : une couche derrière le contenu des deux sections noires -- */
