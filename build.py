@@ -45,10 +45,14 @@ for href in set(re.findall(r"href='(https://www\.victoire2\.com/[^']*(?:icons|fo
 for u in set(re.findall(r"url\('(https://www\.victoire2\.com/[^']+\.(?:woff2?|ttf))'\)",s)):
     p=mirror(u)
     if p: s=s.replace(u,LOCAL+p)
-css=open('fx/v2-vivant.css',encoding='utf-8').read()
-js=open('fx/v2-vivant.js',encoding='utf-8').read()
+# Le logo sert de masque au fantôme rouge : il faut une copie servie avec le CORS ouvert
+logo=mirror('https://www.victoire2.com/wp-content/uploads/2023/06/Victoire-2_logo-complet.svg')
+logo2=mirror('https://www.victoire2.com/wp-content/uploads/2023/06/Victoire-2_logo-blanc.svg')  # logo de l'en-tête mobile
+css=(':root{--v2d-logo:url("'+LOCAL+logo+'")}\na.logo_is_img.logo_2{--v2d-logo:url("'+LOCAL+(logo2 or logo)+'")}\n'
+     +open('fx/v2-details.css',encoding='utf-8').read())
+js=open('fx/v2-details.js',encoding='utf-8').read()
 panel=open('fx/panneau-demo.js',encoding='utf-8').read()
-inj=f'\n<!-- V2 vivant (démo) -->\n<style id="v2-vivant-css">\n{css}\n</style>\n<script id="v2-vivant-js">\n{js}\n</script>\n<script>\n{panel}\n</script>\n'
+inj=f'\n<!-- V2 détails (démo) -->\n<style id="v2-details-css">\n{css}\n</style>\n<script id="v2-details-js">\n{js}\n</script>\n<script>\n{panel}\n</script>\n'
 i=s.rfind('</body>'); s=s[:i]+inj+s[i:]
 open('index.html','w',encoding='utf-8').write(s)
 print('index.html', len(s), 'octets ; gtag restants :', len(re.findall('gtag',s)))

@@ -1,0 +1,31 @@
+/* V2 détails : trois petits détails visuels, un seul motif — le « mal repéré » de sérigraphie, en rouge V2.
+   Rien ne change dans la structure, la typo, le logo ou les couleurs du site ; chaque détail dépend d'une classe sur <body>
+   (v2d-on-logo, v2d-on-seri, v2d-on-eq) et se coupe si le système demande moins d'animations. */
+
+/* ---- 1. Logo : de temps en temps, un fantôme rouge décalé qui se recale (le survol reste celui du site) ---- */
+a.logo_is_img{position:relative;display:inline-block;isolation:isolate}
+a.logo_is_img::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;
+  background:#E00404;-webkit-mask:var(--v2d-logo) center/contain no-repeat;mask:var(--v2d-logo) center/contain no-repeat}
+body.v2d-on-logo a.logo_is_img.v2d-tic::before{animation:v2d-reg .9s cubic-bezier(.3,.7,.2,1) 1}
+@keyframes v2d-reg{0%{opacity:.9;transform:translate(5px,-4px)}55%{opacity:.75;transform:translate(1px,-1px)}100%{opacity:0;transform:none}}
+
+/* ---- 2. Affiches et photo du prochain concert : même décalage rouge, bref, au survol ---- */
+.v2d-host{position:relative;overflow:hidden}
+.v2d-seri{display:none;position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;
+  background-image:var(--v2d-img);background-size:cover;background-position:center;
+  filter:grayscale(1) contrast(1.6) brightness(1.1);mix-blend-mode:multiply}
+.v2d-seri::after{content:"";position:absolute;inset:0;background:#E00404;mix-blend-mode:screen}
+body.v2d-on-seri .v2d-seri{display:block}
+body.v2d-on-seri .v2d-host:hover .v2d-seri,body.v2d-on-seri .v2-in .v2d-seri{animation:v2d-seri .7s cubic-bezier(.3,.7,.2,1) 1}
+@keyframes v2d-seri{0%{opacity:.75;transform:translate(9px,-7px)}60%{opacity:.5;transform:translate(-1px,1px)}100%{opacity:0;transform:none}}
+
+/* ---- 3. Petit égaliseur à côté de « Prochain concert » ---- */
+.v2d-eq{display:none;align-items:flex-end;gap:2px;height:13px;margin-left:12px;vertical-align:middle;color:#E00404}
+body.v2d-on-eq .v2d-eq{display:inline-flex}
+.v2d-eq i{display:block;width:3px;height:100%;background:currentColor;transform-origin:bottom;transform:scaleY(.15)}
+
+/* ---- Accessibilité ---- */
+@media (prefers-reduced-motion:reduce){a.logo_is_img::before,.v2d-seri{animation:none!important;display:none!important}.v2d-eq{display:none!important}}
+body.v2d-calm a.logo_is_img::before,body.v2d-calm .v2d-seri{animation:none!important;display:none!important}
+body.v2d-calm .v2d-eq i{transform:scaleY(.35)!important}
+body.pojo-a11y-high-contrast .v2d-eq,body.pojo-a11y-grayscale .v2d-eq{display:none!important}
